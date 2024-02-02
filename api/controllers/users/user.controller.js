@@ -177,7 +177,7 @@ module.exports = {
                  //update user details if user id does not exist in user details table then insert the recors otherwise update the the records
                  userService.updateUserDetailsQuery(data,(err,results)=>{
                      if(err){
-                        const message = "Something went wrong!"
+                        const message = err.sqlMessage ||"Something went wrong!"
                         return errorResponse(res,500,false,message)
                      }
                      return res.status(201).json({

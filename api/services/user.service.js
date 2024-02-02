@@ -133,7 +133,6 @@ module.exports = {
         let gender = data.gender
         let dob = data.date_of_birth
         let dobSplit = dob.split("/")
-
         let dobFormat = dobSplit[2]+'-'+dobSplit[1]+'-'+dobSplit[0]
         let doj = data.date_of_joining
         let dojSplit = doj.split("/")
@@ -170,11 +169,11 @@ module.exports = {
                             personalEmail,
                             phone,
                             gender,
-                            dob,
+                            dobFormat,
                             position,
                             qualification,
                             maritialStatus,
-                            doj,
+                            dojFormat,
                             bloodGroup,
                             permanentAddress,
                             currentAddress,
