@@ -25,17 +25,16 @@ module.exports = {
         const validateEmail = req.body.email.split('@');
         
         if(validateEmail[1] == domain){
-            if(body.name !== "" && body.firebase_token !== ""){
-
+            if(body.name && body.firebase_token){
                 pool.query( `select * from users where email = '${req.body.email}' and name = '${req.body.name}'`,
                     // [req.body.email,req.body.name],
                     (error, results, fields) => {
-                        if(results[0]){
+                        if(results && results[0]){
                             email = results[0].email;
     
                             var roleId = 3;
                             var configSuperAdminEmail1 = config.super_admin_email1;       //"sharanveerk@bootesnull.com";
-                            var configSuperAdminEmail2 = config.super_admin_email2;      //"sharan@bootesnull.com";
+                            var configSuperAdminEmail2 = config.super_admin_email2;      //"manishkumar@bootesnull.com";
                             if(configSuperAdminEmail1 == results[0].email || configSuperAdminEmail2 == results[0].email){
                                 var roleId  = 1;
                             }
@@ -63,7 +62,7 @@ module.exports = {
                             userService.create(body,(err,results,token)=>{
                 
                                 if(err){ 
-                              
+                                    console.log(err);
                                     const message = "Something went wrong!";
                                     return errorResponse(res,500,false,message);
                                 }

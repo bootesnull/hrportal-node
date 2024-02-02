@@ -20,7 +20,7 @@ module.exports = {
         checkIn(id, 1,(err,results) => {
           
             if(err){
-                const message = "Something went wrong!";
+                const message =  err.sqlMessage || "Something went wrong!";
                 return errorResponse(res,500,false,message);
                
             }

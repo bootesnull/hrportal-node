@@ -139,7 +139,7 @@ function viewPermissionQuery(id,callback){
 }
 function updatePermissionQuery(body,callback){
     let permission_name = body.permission_name;
-    let parent = body.parent;
+    let parent = (body.parent) ? body.parent : 0;
     let id = body.id;
     pool.query(
         `UPDATE permissions SET permission_name = '${permission_name}', parent='${parent}', updated_at='${created}' WHERE id = '${id}'`,

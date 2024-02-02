@@ -21,7 +21,7 @@ module.exports = {
      createRole: (req,res)=>{
         try {
             const body = req.body;
-            if(body.name !== ""){
+            if(body.name){
                 rbacServices.roleNameExist(body.name,(err,results)=>{
                     if(results){
                         const message = "Role has been  already created!";
@@ -29,7 +29,7 @@ module.exports = {
                     }else{
                         rbacServices.createRoleQuery(body, (err,results)=>{
                             if(err){
-                                const message = "Something went wrong!";
+                                const message = err.sqlMessage || "Something went wrong!";
                                 return errorResponse(res,500,false,message);
                             }
                             return res.status(201).json({
@@ -45,7 +45,7 @@ module.exports = {
                 return errorResponse(res,500,false,message);
             }
         } catch (error) {
-            const message = "Something went wrong!";
+            const message = error.sqlMessage || "Something went wrong!";
             return errorResponse(res,500,false,message);
         }
     },
@@ -75,7 +75,7 @@ module.exports = {
 
         try {
             const body = req.body;
-            if(body.id!== "" && body.name !== ""){
+            if(body.id && body.name){
 
                 const checkUpdateResponse = await rbacServices.queryUpdateRole(body)
                 if(checkUpdateResponse){
