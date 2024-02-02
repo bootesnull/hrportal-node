@@ -42,6 +42,44 @@ const userMiddleware = require('../middleware/auth')
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Permission:
+ *       type: object
+ *       required:
+ *         - permission_name
+ *         - status
+ *       properties:
+ *         id:
+ *           type: number
+ *           description: ID of the role
+ *         permission_name:
+ *           type: string
+ *           description: Name of the role
+ *         parent:
+ *           type: number
+ *           description: Parent role ID
+ *         status:
+ *           type: number
+ *           description: Status of the role
+ *         created_at:
+ *           type: string
+ *           format: date
+ *           description: The date the role was created
+ *         updated_at:
+ *           type: string
+ *           format: date
+ *           description: The date the role was last updated
+ *       example:
+ *         id: 1
+ *         name: Test Role
+ *         status: 1
+ *         created_at: 2023-04-06T12:21:27.000Z
+ *         updated_at: 2024-02-01T11:03:55.000Z
+ */
+
+/**
+ * @swagger
  * tags:
  *   name: Roles
  *   description: API endpoints for managing roles
