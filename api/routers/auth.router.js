@@ -32,12 +32,103 @@
  *       example:
  *         id: 1
  *         name: Test User
- *         email: testuser@example.com
+ *         email: testuser@bootesnull.com
  *         firebase_token: eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4ZjM4ODM0NjhmYzY1OWF
  *         created_at: 2023-04-06T12:21:27.000Z
  *         updated_at: 2024-02-01T11:03:55.000Z
  */
 
+const express = require("express");
+const router = express.Router();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const db = require("../../config/database");
+const { createUser } = require("../controllers/users/user.controller");
+const userMiddleware = require("../middleware/auth");
+const errorResponse = require("../services/errorResponse.service");
+const dateTime = require("node-datetime");
+const dt = dateTime.create();
+const created = dt.format("Y-m-d H:M:S");
+const collect = require("collect.js");
+// const acl = require('express-acl');
+// let collection = collect(acl);
+// collection.dd();
+const config = require('../../config/config');
+
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: API endpoints for authentication
+ * /sign-up:
+ *   post:
+ *     summary: Signup endpoint for new users to create a account
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                type: string
+ *                example: Test User
+ *               email:
+ *                type: string
+ *                example: testuser@bootesnull.com
+ *               firebase_token:
+ *                type: string
+ *                example: eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4ZjM4ODM0NjhmYzY1OWF
+ *     responses:
+ *       201:
+ *         description: On successful signup.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 201
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Employee created successfully
+ *               data:
+ *                type: object
+ *                properties:
+ *                  name:
+ *                   type: string
+ *                   example: Test User
+ *                  email:
+ *                   type: string
+ *                   example: testuser@bootesnull.com
+ *                  token:
+ *                   type: string
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYXJhbnZlZXJra2sxQGJvb3Rlc251bGwuY29tIiwidXNlcklkIjo5LCJyb2xlIjozLCJpYXQiOjE3MDY4NTg1NTgsImV4cCI6MTcwNzQ2MzM1OH0.fPPB0isWs761XXKPI4Q3WS3OAQDJx5d-4BEQbkS0twc
+ *                
+ *       500:
+ *         description: Some server error.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 500
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Something went wrong!
+ *
+ */
+router.post("/sign-up", createUser);
 
 /**
  * @swagger
@@ -57,7 +148,7 @@
  *             properties:
  *               email:
  *                type: string
- *                example: sharanveerk@bootesnull.com
+ *                example: testuser@bootesnull.com
  *     responses:
  *       200:
  *         description: On successful login.
@@ -95,7 +186,7 @@
  *                example: false
  *               message:
  *                type: message
- *                example: Invalid credentials
+ *                example: Invalid credentials!
  *       500:
  *         description: Some server error.
  *         content:
@@ -114,25 +205,6 @@
  *                example: Something went wrong!
  *
  */
-
-const express = require("express");
-const router = express.Router();
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const db = require("../../config/database");
-const { createUser } = require("../controllers/users/user.controller");
-const userMiddleware = require("../middleware/auth");
-const errorResponse = require("../services/errorResponse.service");
-const dateTime = require("node-datetime");
-const dt = dateTime.create();
-const created = dt.format("Y-m-d H:M:S");
-const collect = require("collect.js");
-// const acl = require('express-acl');
-// let collection = collect(acl);
-// collection.dd();
-const config = require('../../config/config');
-
-router.post("/sign-up", createUser);
 router.post("/login", (req, res, next) => {
   db.query(
     `SELECT * FROM users WHERE email = ?`,
@@ -144,7 +216,7 @@ router.post("/login", (req, res, next) => {
         return errorResponse(res, 400, false, err);
       }
       if (!result.length) {
-        const message = "Email is incorrect!";
+        const message = "Invalid credentials!";
         return errorResponse(res, 400, false, message);
       }
 
@@ -182,7 +254,7 @@ router.post("/login", (req, res, next) => {
           user: result[0],
         });
       }
-      const message = "Email is incorrect!";
+      const message = "Invalid credentials!";
       return errorResponse(res, 400, false, message);
     }
   );
