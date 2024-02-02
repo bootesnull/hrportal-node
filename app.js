@@ -24,27 +24,30 @@ const options = {
       version: "0.1.0",
       description:
         "Simple to use HR portal developed on Node.js",
-      license: {
-        name: "MIT",
-        url: "https://spdx.org/licenses/MIT.html",
-      },
-      contact: {
-        name: "LogRocket",
-        url: "https://logrocket.com",
-        email: "info@email.com",
-      },
+      // license: {
+      //   name: "MIT",
+      //   url: "https://spdx.org/licenses/MIT.html",
+      // },
+      // contact: {
+      //   name: "LogRocket",
+      //   url: "https://logrocket.com",
+      //   email: "info@email.com",
+      // },
     },
     servers: [
       {
         url: "http://localhost:3000/api",
       },
     ],
+    security: [{
+      bearerAuth: []
+    }]
   },
   apis: ["./api/routers/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use(logger("dev"));
 app.use(express.json());
