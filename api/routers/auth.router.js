@@ -1,3 +1,43 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - firebase_token
+ *       properties:
+ *         id:
+ *           type: number
+ *           description: The auto-generated id of the user
+ *         name:
+ *           type: string
+ *           description: The name of the user
+ *         email:
+ *           type: string
+ *           description: Email of the user
+ *         firebase_token:
+ *           type: string
+ *           description: Firebase token of the user
+ *         created_at:
+ *           type: string
+ *           format: date
+ *           description: The date the user was created
+ *         updated_at:
+ *           type: string
+ *           format: date
+ *           description: The date the user was updated
+ *       example:
+ *         id: 1
+ *         name: Test User
+ *         email: testuser@example.com
+ *         firebase_token: eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4ZjM4ODM0NjhmYzY1OWF
+ *         created_at: 2023-04-06T12:21:27.000Z
+ *         updated_at: 2024-02-01T11:03:55.000Z
+ */
+
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
