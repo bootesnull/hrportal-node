@@ -123,8 +123,8 @@ module.exports = {
             let data = req.body
             const statusUpdateResponse = await rbacServices.roleStatusUpdate(data)
             if(statusUpdateResponse){
-                return res.status(201).json({
-                    statusCode:201,
+                return res.status(200).json({
+                    statusCode:200,
                     success:true,
                     message: "Role status has been updated successfully.",
                 });   
