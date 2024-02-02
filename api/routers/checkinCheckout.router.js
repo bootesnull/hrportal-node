@@ -13,8 +13,6 @@ const {userCheckIn,userCheckOut} = require('../controllers//users/checkInCheckou
  *   description: API endpoints for checkin and checkout
  * /checkin-checkout/checkin:
  *   post:
- *     security:
- *      - bearerAuth: []
  *     summary: Endpoint for checkin
  *     tags: [Checkin Checkout]
  *     responses:
@@ -33,7 +31,7 @@ const {userCheckIn,userCheckOut} = require('../controllers//users/checkInCheckou
  *                example: true
  *               message:
  *                type: string
- *                example: Checkin successfull
+ *                example: Checkin successful
  *               checkInTime:
  *                type: string
  *                example: 14:23:03
@@ -78,8 +76,6 @@ router.post('/checkin', userMiddleware.isLoggedIn, userCheckIn);
  * @swagger
  * /checkin-checkout/checkout:
  *   post:
- *     security:
- *      - bearerAuth: []
  *     summary: Endpoint for checkout
  *     tags: [Checkin Checkout]
  *     responses:
@@ -98,7 +94,7 @@ router.post('/checkin', userMiddleware.isLoggedIn, userCheckIn);
  *                example: true
  *               message:
  *                type: string
- *                example: Checkout successfull
+ *                example: Checkout successful
  *               checkoutTime:
  *                type: string
  *                example: 17:23:03

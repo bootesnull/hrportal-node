@@ -22,8 +22,7 @@ const options = {
     info: {
       title: "HR Portal Express API",
       version: "0.1.0",
-      description:
-        "Simple to use HR portal developed on Node.js",
+      description: "Simple to use HR portal developed on Node.js",
       // license: {
       //   name: "MIT",
       //   url: "https://spdx.org/licenses/MIT.html",
@@ -39,9 +38,21 @@ const options = {
         url: "http://localhost:3000/api",
       },
     ],
-    security: [{
-      bearerAuth: []
-    }]
+    basePath: '/abc',
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
   },
   apis: ["./api/routers/*.js"],
 };
