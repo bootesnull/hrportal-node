@@ -38,6 +38,83 @@
  *         updated_at: 2024-02-01T11:03:55.000Z
  */
 
+
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: API endpoints for authentication
+ * /login:
+ *   post:
+ *     summary: Login endpoint for existing users
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                type: string
+ *                example: sharanveerk@bootesnull.com
+ *     responses:
+ *       200:
+ *         description: On successful login.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: success
+ *               token:
+ *                type: string
+ *                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYXJhbnZlZXJrQGJvb3Rlc251bGwuY29tIiwidXNlcklkIjoxLCJyb2xlIjoxLCJpYXQiOjE3MDY4NTY4NjMsImV4cCI6MTcwNzQ2MTY2M30.UVKLnBmNQuWKgEBxxBVFyRAPMMwfC6Ntm5Ah59PSmoc
+ *               user:
+ *                 $ref: '#/components/schemas/User'
+ *       400:
+ *         description: When credentials are invalid.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Invalid credentials
+ *       500:
+ *         description: Some server error.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 500
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Something went wrong!
+ *
+ */
+
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
@@ -68,7 +145,7 @@ router.post("/login", (req, res, next) => {
       }
       if (!result.length) {
         const message = "Email is incorrect!";
-        return errorResponse(res, 401, false, message);
+        return errorResponse(res, 400, false, message);
       }
 
       // check password
@@ -106,7 +183,7 @@ router.post("/login", (req, res, next) => {
         });
       }
       const message = "Email is incorrect!";
-      return errorResponse(res, 401, false, message);
+      return errorResponse(res, 400, false, message);
     }
   );
 });
