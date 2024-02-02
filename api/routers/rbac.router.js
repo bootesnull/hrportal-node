@@ -7,6 +7,41 @@ const userMiddleware = require('../middleware/auth')
 
 /**
  * @swagger
+ * components:
+ *   schemas:
+ *     Role:
+ *       type: object
+ *       required:
+ *         - name
+ *         - status
+ *       properties:
+ *         id:
+ *           type: number
+ *           description: ID of the role
+ *         name:
+ *           type: string
+ *           description: Name of the role
+ *         status:
+ *           type: number
+ *           description: Status of the role
+ *         created_at:
+ *           type: string
+ *           format: date
+ *           description: The date the role was created
+ *         updated_at:
+ *           type: string
+ *           format: date
+ *           description: The date the role was last updated
+ *       example:
+ *         id: 1
+ *         name: Test Role
+ *         status: 1
+ *         created_at: 2023-04-06T12:21:27.000Z
+ *         updated_at: 2024-02-01T11:03:55.000Z
+ */
+
+/**
+ * @swagger
  * tags:
  *   name: Roles
  *   description: API endpoints for managing roles
@@ -115,6 +150,81 @@ const userMiddleware = require('../middleware/auth')
  *
  */
 router.post('/role/store',userMiddleware.isAdmin,role.createRole)
+
+/**
+ * @swagger
+ * /rbac/role/list:
+ *   get:
+ *     summary: Endpoint for getting a list of all roles
+ *     tags: [Roles]
+ *     responses:
+ *       200:
+ *         description: On successfully getting a list of roles.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 201
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Roles fetched successfully.
+ *       401:
+ *         description: When user's session is expired.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 401
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Your session is not valid!
+ *       403:
+ *         description: When logged in user is not an admin user.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 403
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Not authorized!
+ *
+ *       500:
+ *         description: Some server error.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 500
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Something went wrong!
+ *
+ */
 router.get('/role/list',userMiddleware.isAdmin,role.getAllRole)
 router.post('/role/edit',userMiddleware.isAdmin,role.roleEdit)
 router.get('/role/view',userMiddleware.isAdmin,role.viewRoleById)

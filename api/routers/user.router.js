@@ -80,8 +80,8 @@
  *         blood_group: O+
  *         permanent_address: 65/71, Haji Kasam Bldg, 2nd Kumbharwada, Kumbharwada
  *         current_address: 81/2rt, Prakash Nagar Opp Airport, Begumpet
- *         profile_imag: https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fvectors%2Fblank-profile-picture-mystery-man-973460%2F&psig=AOvVaw17V1H1Y_xabPtooNB83Bfe&ust=1706939756392000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCIDz6aH8i4QDFQAAAAAdAAAAABAE
- *         documents: ["document-1-uri", "document-2-uri"]
+ *         profile_image: https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fvectors%2Fblank-profile-picture-mystery-man-973460%2F&psig=AOvVaw17V1H1Y_xabPtooNB83Bfe&ust=1706939756392000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCIDz6aH8i4QDFQAAAAAdAAAAABAE
+ *         document: ["document-1-uri", "document-2-uri"]
  */
 
 const router = require("express").Router();

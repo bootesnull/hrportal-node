@@ -28,7 +28,7 @@
  *         updated_at:
  *           type: string
  *           format: date
- *           description: The date the user was updated
+ *           description: The date the user was last updated
  *       example:
  *         id: 1
  *         name: Test User
