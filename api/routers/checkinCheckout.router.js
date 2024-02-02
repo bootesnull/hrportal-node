@@ -11,6 +11,10 @@ const {userCheckIn,userCheckOut} = require('../controllers//users/checkInCheckou
  * tags:
  *   name: Checkin Checkout
  *   description: API endpoints for checkin and checkout
+ */
+
+/**
+ * @swagger
  * /checkin-checkout/checkin:
  *   post:
  *     summary: Endpoint for checkin

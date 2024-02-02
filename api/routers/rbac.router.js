@@ -5,7 +5,115 @@ const rolePermission = require("../controllers/rbac/role_permission.controller")
 const assignRole = require("../controllers/rbac/assign_role.controller")
 const userMiddleware = require('../middleware/auth')
 
+/**
+ * @swagger
+ * tags:
+ *   name: Roles
+ *   description: API endpoints for managing roles
+ */
+
 //Route for  roles 
+/**
+ * @swagger
+ * /rbac/role/store:
+ *   post:
+ *     summary: Endpoint for creating a role
+ *     tags: [Roles]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                type: string
+ *                example: Test Role
+ *                description: Role name
+ *     responses:
+ *       201:
+ *         description: On successful role creation.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 201
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role has been created successfully.
+ *       400:
+ *         description: When no role name is sent or role with same name already exist.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Role has been already created!
+ *       401:
+ *         description: When user's session is expired.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 401
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Your session is not valid!
+ *       403:
+ *         description: When logged in user is not an admin user.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 403
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Not authorized!
+ *
+ *       500:
+ *         description: Some server error.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 500
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Something went wrong!
+ *
+ */
 router.post('/role/store',userMiddleware.isAdmin,role.createRole)
 router.get('/role/list',userMiddleware.isAdmin,role.getAllRole)
 router.post('/role/edit',userMiddleware.isAdmin,role.roleEdit)

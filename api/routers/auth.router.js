@@ -38,6 +38,13 @@
  *         updated_at: 2024-02-01T11:03:55.000Z
  */
 
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: API endpoints for authentication
+ */
+
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
@@ -53,13 +60,10 @@ const collect = require("collect.js");
 // const acl = require('express-acl');
 // let collection = collect(acl);
 // collection.dd();
-const config = require('../../config/config');
+const config = require("../../config/config");
 
 /**
  * @swagger
- * tags:
- *   name: Auth
- *   description: API endpoints for authentication
  * /sign-up:
  *   post:
  *     summary: Endpoint for new users to create a account
@@ -109,7 +113,7 @@ const config = require('../../config/config');
  *                  token:
  *                   type: string
  *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYXJhbnZlZXJra2sxQGJvb3Rlc251bGwuY29tIiwidXNlcklkIjo5LCJyb2xlIjozLCJpYXQiOjE3MDY4NTg1NTgsImV4cCI6MTcwNzQ2MzM1OH0.fPPB0isWs761XXKPI4Q3WS3OAQDJx5d-4BEQbkS0twc
- *                
+ *
  *       500:
  *         description: Some server error.
  *         content:
@@ -219,20 +223,15 @@ router.post("/login", (req, res, next) => {
 
       // check password
       if (result) {
-        var roleId = 3;
-        var configSuperAdminEmail1 = config.super_admin_email1; //"sharanveerk@bootesnull.com";
-        var configSuperAdminEmail2 = config.super_admin_email2; //"sharan@bootesnull.com";
-        if (
-          configSuperAdminEmail1 == result[0].email ||
-          configSuperAdminEmail2 == result[0].email
-        ) {
-          var roleId = 1;
+        let roleId = 3;
+        if(result[0].role) {
+          roleId = +result[0].role;
         }
         const token = jwt.sign(
           {
             email: result[0].email,
             userId: result[0].id,
-            role: roleId
+            role: roleId,
           },
           "SECRETKEY",
           {

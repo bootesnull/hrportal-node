@@ -24,8 +24,8 @@ module.exports = {
             if(body.name){
                 rbacServices.roleNameExist(body.name,(err,results)=>{
                     if(results){
-                        const message = "Role has been  already created!";
-                        return errorResponse(res,500,false,message);
+                        const message = "Role has been already created!";
+                        return errorResponse(res,400,false,message);
                     }else{
                         rbacServices.createRoleQuery(body, (err,results)=>{
                             if(err){
@@ -41,8 +41,8 @@ module.exports = {
                     }
                 })
             }else{
-                const message = "Name does not empty!";
-                return errorResponse(res,500,false,message);
+                const message = "Name can not be empty!";
+                return errorResponse(res,400,false,message);
             }
         } catch (error) {
             const message = error.sqlMessage || "Something went wrong!";
