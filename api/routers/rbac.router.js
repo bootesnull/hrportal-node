@@ -149,7 +149,7 @@ const userMiddleware = require('../middleware/auth')
  *                example: Something went wrong!
  *
  */
-router.post('/role/store',userMiddleware.isAdmin,role.createRole)
+router.post('/role/store',userMiddleware.isAdmin,role.createRole);
 
 /**
  * @swagger
@@ -321,7 +321,92 @@ router.get('/role/list',userMiddleware.isAdmin,role.getAllRole)
  *
  */
 router.post('/role/edit',userMiddleware.isAdmin,role.roleEdit)
+
+/**
+ * @swagger
+ * /rbac/role/view?id=1:
+ *   get:
+ *     summary: Endpoint for a single role by id
+ *     tags: [Roles]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the role to edit.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: On successfully getting the roles.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role has been fetched successfully.
+ *               data:
+ *                  $ref: '#/components/schemas/Role'
+ *       401:
+ *         description: When user's session is expired.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 401
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Your session is not valid!
+ *       403:
+ *         description: When logged in user is not an admin user.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 403
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Not authorized!
+ *
+ *       500:
+ *         description: Some server error.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 500
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Something went wrong!
+ *
+ */
 router.get('/role/view',userMiddleware.isAdmin,role.viewRoleById)
+
 router.put('/role/update-status',userMiddleware.isAdmin,role.changeStatus)
 // router.delete('/role/delete',userMiddleware.isAdmin,deleteRole)
 

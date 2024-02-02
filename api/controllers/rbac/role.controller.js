@@ -106,7 +106,7 @@ module.exports = {
                 return res.status(201).json({
                     statusCode:201,
                     success:true,
-                    message: "Role has been updated successfully.",
+                    message: "Role has been fetched successfully.",
                     data: viewResponse
                 });  
             }else{
