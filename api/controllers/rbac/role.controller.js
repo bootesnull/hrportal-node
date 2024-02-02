@@ -80,8 +80,8 @@ module.exports = {
                 const checkUpdateResponse = await rbacServices.queryUpdateRole(body)
                 if(checkUpdateResponse){
     
-                    return res.status(201).json({
-                        statusCode:201,
+                    return res.status(200).json({
+                        statusCode:200,
                         success:true,
                         message: "Role has been updated successfully.",
                     });

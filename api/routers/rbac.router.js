@@ -167,13 +167,17 @@ router.post('/role/store',userMiddleware.isAdmin,role.createRole)
  *             properties:
  *               statusCode:
  *                type: integer
- *                example: 201
+ *                example: 200
  *               success:
  *                type: boolean
  *                example: true
  *               message:
  *                type: string
  *                example: Roles fetched successfully.
+ *               data:
+ *                 type: array
+ *                 items:
+ *                  $ref: '#/components/schemas/Role'
  *       401:
  *         description: When user's session is expired.
  *         content:
@@ -226,6 +230,96 @@ router.post('/role/store',userMiddleware.isAdmin,role.createRole)
  *
  */
 router.get('/role/list',userMiddleware.isAdmin,role.getAllRole)
+
+/**
+ * @swagger
+ * /rbac/role/edit:
+ *   post:
+ *     summary: Endpoint for editing a role
+ *     tags: [Roles]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                type: number
+ *                example: 1
+ *                description: Role ID
+ *               name:
+ *                type: string
+ *                example: Test Role
+ *                description: Role name
+ *     responses:
+ *       200:
+ *         description: On successful edit of role.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role has been updated successfully.
+ *       401:
+ *         description: When user's session is expired.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 401
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Your session is not valid!
+ *       403:
+ *         description: When logged in user is not an admin user.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 403
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Not authorized!
+ *
+ *       500:
+ *         description: Some server error.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 500
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Something went wrong!
+ *
+ */
 router.post('/role/edit',userMiddleware.isAdmin,role.roleEdit)
 router.get('/role/view',userMiddleware.isAdmin,role.viewRoleById)
 router.put('/role/update-status',userMiddleware.isAdmin,role.changeStatus)
