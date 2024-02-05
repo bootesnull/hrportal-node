@@ -10,23 +10,25 @@ module.exports = {
     storeLeaveType: async(req,res)=>{
         try {
             let body = req.body
-            if(body.leave_type_name !== "" && body.is_paid !== ""){
+            if(body.leave_type_name && body.is_paid && body.allow_number_of_leaves){
                 let storeResponse = await leaveService.createLeaveType(body)
                
                 if(storeResponse){
                     return res.status(201).json({
                         statusCode:201,
                         success:true,
-                        message:"leave type has been saved successfully.",
+                        message:"Leave type has been saved successfully.",
                     });
                 }
             }else{
-                let message = "leave type name and is paid field does not empty!";
-                return errorResponse(res,500,false,message);
+                let message = "Please provide all values.";
+                return errorResponse(res,400,false,message);
             }
         } catch (error) {
-            let message = "Something went wrong!";
-            return errorResponse(res,500,false,message);
+            console.log(error);
+            let message = error.sqlMessage || "Something went wrong!";
+            const statusCode = error.code === 'ER_DUP_ENTRY' ? 400 : 500;
+            return errorResponse(res,statusCode,false,message);
         }
     },
     viewLeaveType : async(req,res)=>{
