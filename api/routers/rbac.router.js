@@ -38,12 +38,6 @@ const userMiddleware = require('../middleware/auth')
  *         status: 1
  *         created_at: 2023-04-06T12:21:27.000Z
  *         updated_at: 2024-02-01T11:03:55.000Z
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
  *     Permission:
  *       type: object
  *       required:
@@ -77,12 +71,41 @@ const userMiddleware = require('../middleware/auth')
  *         status: 1
  *         created_at: 2023-04-06T12:21:27.000Z
  *         updated_at: 2024-02-01T11:03:55.000Z
- */
-
-// Common API responses
-/**
- * @swagger
- * components:
+ *     RolePermission:
+ *       type: object
+ *       required:
+ *         - role_id
+ *         - permission_id
+ *         - status
+ *       properties:
+ *         id:
+ *           type: number
+ *           description: ID of the RolePermission entry
+ *         role_id:
+ *           type: number
+ *           description: ID of the role
+ *         permission_id:
+ *           type: number
+ *           description: ID of the permission
+ *         status:
+ *           type: number
+ *           description: Status of RolePermission entry
+ *         created_at:
+ *           type: string
+ *           format: date
+ *           description: The date the RolePermission entry was created
+ *         updated_at:
+ *           type: string
+ *           format: date
+ *           description: The date the RolePermission entry was last updated
+ *       example:
+ *         id: 1
+ *         role_id: 2
+ *         permission_id: 5
+ *         status: 1
+ *         created_at: 2023-04-06T12:21:27.000Z
+ *         updated_at: 2024-02-01T11:03:55.000Z
+ * 
  *   responses:
  *     Unauthenticated:
  *         description: When user's session is expired.
@@ -100,12 +123,6 @@ const userMiddleware = require('../middleware/auth')
  *               message:
  *                type: string
  *                example: Your session is not valid!
- */
-
-/**
- * @swagger
- * components:
- *   responses:
  *     Unauthorized:
  *         description: When logged in user is not an admin user.
  *         content:
@@ -122,12 +139,6 @@ const userMiddleware = require('../middleware/auth')
  *               message:
  *                type: string
  *                example: Not authorized!
- */
-
-/**
- * @swagger
- * components:
- *   responses:
  *     InternalServerError:
  *         description: Some server error.
  *         content:
@@ -361,7 +372,7 @@ router.get('/role/view',userMiddleware.isAdmin,role.viewRoleById)
  *               value:
  *                type: number
  *                example: 1
- *                description: New value for status
+ *                description: New value for the status
  *     responses:
  *       200:
  *         description: On successful update of role status.
@@ -606,7 +617,7 @@ router.post('/permission/edit', userMiddleware.isAdmin, permission.permissionEdi
  *               value:
  *                type: number
  *                example: 1
- *                description: New value for status
+ *                description: New value for the status
  *     responses:
  *       200:
  *         description: On successful update of permission status.
@@ -634,11 +645,241 @@ router.post('/permission/edit', userMiddleware.isAdmin, permission.permissionEdi
  */
 router.put('/permission/update-status', userMiddleware.isAdmin, permission.permissionUpdateStatus)
 
-// //Rout role permisssion
+// Routes for role permisssion
+ /**
+ * @swagger
+ * tags:
+ *   name: Role Permission
+ *   description: API endpoints for managing role permissions
+ */
+
+/**
+ * @swagger
+ * /rbac/allow-role-permission:
+ *   get:
+ *     summary: Get list of all permissions
+ *     tags: [Role Permission]
+ *     responses:
+ *       200:
+ *         description: On successfully getting a list of role permissions.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role Permission has been fetched successfully.
+ *               data:
+ *                 type: array
+ *                 items:
+ *                  $ref: '#/components/schemas/RolePermission'
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.get('/allow-role-permission',userMiddleware.isAdmin,rolePermission.ListRolePermission);
+
+/**
+ * @swagger
+ * /rbac/allow-role-permission/store:
+ *   post:
+ *     summary: Create a new role permission
+ *     tags: [Role Permission]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               role_id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the role
+ *               permission_id:
+ *                type: number
+ *                example: 3
+ *                description: ID of the permission
+ *     responses:
+ *       201:
+ *         description: On successful role permission creation.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 201
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role Permission has been saved successfully.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.post('/allow-role-permission/store',userMiddleware.isAdmin,rolePermission.storeRolePermission);
+
+/**
+ * @swagger
+ * /rbac/allow-role-permission/view?id=1:
+ *   get:
+ *     summary: Get role permission by id
+ *     tags: [Role Permission]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the role permission to get.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: On successfully getting the role permission.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role Permission has been fetched successfully.
+ *               data:
+ *                 type: array
+ *                 items:
+ *                  $ref: '#/components/schemas/RolePermission'
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.get('/allow-role-permission/view',userMiddleware.isAdmin,rolePermission.viewRolePermission);
+
+/**
+ * @swagger
+ * /rbac/allow-role-permission/edit:
+ *   post:
+ *     summary: Edit a role permission
+ *     tags: [Role Permission]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the role permission
+ *               role_id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the role
+ *               permission_id:
+ *                type: number
+ *                example: 2
+ *                description: ID of the permission
+ *     responses:
+ *       200:
+ *         description: On successful edit of role permission.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role Permission has been updated successfully.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.post('/allow-role-permission/edit',userMiddleware.isAdmin,rolePermission.editRolePermission);
+
+/**
+ * @swagger
+ * /rbac/allow-role-permission/update-status:
+ *   put:
+ *     summary: Update role permission status
+ *     tags: [Role Permission]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the role permission
+ *               value:
+ *                type: number
+ *                example: 1
+ *                description: New value for the status
+ *     responses:
+ *       200:
+ *         description: On successful update of role permission status.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role Permission status has been changed successfully.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.put('/allow-role-permission/update-status',userMiddleware.isAdmin,rolePermission.updateStatusRolePermission);
 // router.delete('/allow-role-permission/delete',userMiddleware.isAdmin,deleteAllowRolePermission);
 

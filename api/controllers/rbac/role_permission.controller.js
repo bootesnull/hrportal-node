@@ -86,8 +86,8 @@ module.exports = {
             if(body.id !== 0 && body.role_id !== 0 && body.permission_id !== 0){
                 const editResponse = await rbacServices.editRolePermissionService(body)
                 if(editResponse){
-                    return res.status(201).json({
-                        statusCode:201,
+                    return res.status(200).json({
+                        statusCode:200,
                         success:true,
                         message: "Role Permission has been updated successfully.",
                     });  
@@ -111,8 +111,8 @@ module.exports = {
             if(body.id !== "" && body.value !== ""){
                 const changeResponse = await rbacServices.changeStatusRolePermissionService(body)
                 if(changeResponse){
-                    return res.status(201).json({
-                        statusCode:201,
+                    return res.status(200).json({
+                        statusCode:200,
                         success:true,
                         message: "Role Permission status has been changed successfully.",
                     });  
