@@ -252,6 +252,8 @@ router.get('/leave-type/view', middleware.isLoggedIn, leaveTypeController.viewLe
  *
  */
 router.put('/leave-type/edit', middleware.isLoggedIn, leaveTypeController.editLeaveType)
+
+
 router.put('/leave-type/status-change', middleware.isLoggedIn, leaveTypeController.statusChangeLeaveType)
 router.get('/leave-type/list', middleware.isLoggedIn, leaveTypeController.listLeaveType)
 

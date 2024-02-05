@@ -112,21 +112,21 @@ module.exports = {
     statusChangeLeaveType : async(req,res)=>{
         try {
                 let body = req.body
-                if(body.id){
+                if(body.id && body.value !== undefined){
                     let statusUpdateResponse = await leaveService.statusUpdateLeaveType(body)
-                    if(statusUpdateResponse !== null){
+                    if(statusUpdateResponse.affectedRows){
                         return res.status(200).json({
                             statusCode:200,
                             success:true,
                             message:"leave type status has been changed successfully.",
                         });
                     }else{
-                        let message = "Id does not exist!";
-                        return errorResponse(res,500,false,message); 
+                        let message = `No leave type with id ${body.id}.`;
+                        return errorResponse(res,400,false,message); 
                     }
                 }else{
-                    let message = "Id does not exist!";
-                        return errorResponse(res,500,false,message); 
+                    let message = "Please provide all values.";
+                    return errorResponse(res,400,false,message); 
                 }
             } catch (error) {
                 let message = "Something went wrong!";
