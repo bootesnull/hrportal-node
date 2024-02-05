@@ -1,76 +1,280 @@
-const express = require('express');
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       required:
+ *         - name
+ *         - email
+ *         - firebase_token
+ *       properties:
+ *         id:
+ *           type: number
+ *           description: The auto-generated id of the user
+ *         name:
+ *           type: string
+ *           description: The name of the user
+ *         last_name:
+ *           type: string
+ *           description: The last name of the user
+ *         email:
+ *           type: string
+ *           description: Email of the user
+ *         password:
+ *           type: string
+ *           description: Hashed password of the user
+ *         email_verified_at:
+ *           type: string
+ *           format: date
+ *           description: The date email was verified by user
+ *         is_admin:
+ *           type: number
+ *           description: Flag representing if the user is a admin user
+ *         role:
+ *           type: number
+ *           description: ID of the role assigned to the user
+ *         status:
+ *           type: number
+ *           description: Status of the user
+ *         gender:
+ *           type: string
+ *           description: Gender the user
+ *         phone:
+ *           type: number
+ *           description: Phone number of the user
+ *         is_deleted:
+ *           type: number
+ *           description: Flag representing if the user is deleted or active
+ *         remember_token:
+ *           type: number
+ *           description: Remember token of the user
+ *         firebase_token:
+ *           type: string
+ *           description: Firebase token of the user
+ *         created_at:
+ *           type: string
+ *           format: date
+ *           description: The date the user was created
+ *         updated_at:
+ *           type: string
+ *           format: date
+ *           description: The date the user was last updated
+ *         organization_id:
+ *           type: number
+ *           description: ID of the organization assigned to user
+ *       example:
+ *         id: 1
+ *         name: Test User
+ *         last_name: Test User Last Name
+ *         email: testuser@bootesnull.com
+ *         password: 5f4dcc3b5aa765d61d8327deb882cf99
+ *         email_verified_at: 2024-02-01T11:03:55.000Z
+ *         is_admin: 0
+ *         role: 1
+ *         status: 1
+ *         gender: Male
+ *         phone: 9867564567
+ *         is_deleted: 0
+ *         remember_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzNDU2Nzg5LCJuYW1lIjoiSm9zZXBoIn0.OpOSSw7e485LOP5PrzScxHb7SR6sAOMRckfFwi4rp7o
+ *         firebase_token: eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4ZjM4ODM0NjhmYzY1OWF
+ *         created_at: 2023-04-06T12:21:27.000Z
+ *         updated_at: 2024-02-01T11:03:55.000Z
+ *         organization_id: 1
+ * 
+ * tags:
+ *   name: Auth
+ *   description: API endpoints for authentication
+ */
+
+const express = require("express");
 const router = express.Router();
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const db = require('../../config/database');
-const {createUser} = require("../controllers/users/user.controller");
-const userMiddleware = require('../middleware/auth');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const db = require("../../config/database");
+const { createUser } = require("../controllers/users/user.controller");
+const userMiddleware = require("../middleware/auth");
 const errorResponse = require("../services/errorResponse.service");
-const dateTime = require('node-datetime');
+const dateTime = require("node-datetime");
 const dt = dateTime.create();
-const created = dt.format('Y-m-d H:M:S')
-const collect = require('collect.js');
+const created = dt.format("Y-m-d H:M:S");
+const collect = require("collect.js");
 // const acl = require('express-acl');
 // let collection = collect(acl);
 // collection.dd();
+const config = require("../../config/config");
 
-router.post('/sign-up', createUser);
-router.post('/login', (req, res, next) => {
-    db.query(
-      `SELECT * FROM users WHERE email = ?`,
-        [req.body.email],
-      (err, result) => {
-        
-        // user does not exists
-        if (err) {
-          throw err;
-          return errorResponse(res,400,false,err);
-        }
-        if (!result.length) {
-          const message = "Email is incorrect!";
-          return errorResponse(res,401,false,message);
-         
-        }
+/**
+ * @swagger
+ * /sign-up:
+ *   post:
+ *     summary: Signup
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                type: string
+ *                example: Test User
+ *               email:
+ *                type: string
+ *                example: testuser@bootesnull.com
+ *               firebase_token:
+ *                type: string
+ *                example: eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4ZjM4ODM0NjhmYzY1OWF
+ *     responses:
+ *       201:
+ *         description: On successful signup.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 201
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Employee created successfully
+ *               data:
+ *                type: object
+ *                properties:
+ *                  name:
+ *                   type: string
+ *                   example: Test User
+ *                  email:
+ *                   type: string
+ *                   example: testuser@bootesnull.com
+ *                  token:
+ *                   type: string
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYXJhbnZlZXJra2sxQGJvb3Rlc251bGwuY29tIiwidXNlcklkIjo5LCJyb2xlIjozLCJpYXQiOjE3MDY4NTg1NTgsImV4cCI6MTcwNzQ2MzM1OH0.fPPB0isWs761XXKPI4Q3WS3OAQDJx5d-4BEQbkS0twc
+ *
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
+router.post("/sign-up", createUser);
 
-        // check password
-        if (result) {
-            const token = jwt.sign({
-                email: result[0].email,
-                userId: result[0].id
-              },
-              'SECRETKEY', {
-                expiresIn: '7d'
-              }
-            );
-            db.query(
-                `INSERT INTO user_tokens (user_id, token, created_at,updated_at) VALUES (?,?,?,?)`,
-                [
-                    result[0].id,
-                    token,
-                    created,
-                    created
-                ],
-            );
-            return res.status(200).send({
-                statusCode:200,
-                success: true,
-                message: "success",
-                token,
-                user: result[0]
-            });
-          }
-          const message = "Email is incorrect!";
-          return errorResponse(res,401,false,message);
-        
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Login
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                type: string
+ *                example: testuser@bootesnull.com
+ *     responses:
+ *       200:
+ *         description: On successful login.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: success
+ *               token:
+ *                type: string
+ *                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYXJhbnZlZXJrQGJvb3Rlc251bGwuY29tIiwidXNlcklkIjoxLCJyb2xlIjoxLCJpYXQiOjE3MDY4NTY4NjMsImV4cCI6MTcwNzQ2MTY2M30.UVKLnBmNQuWKgEBxxBVFyRAPMMwfC6Ntm5Ah59PSmoc
+ *               user:
+ *                 $ref: '#/components/schemas/User'
+ *       400:
+ *         description: When credentials are invalid.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Invalid credentials!
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
+router.post("/login", (req, res, next) => {
+  db.query(
+    `SELECT * FROM users WHERE email = ?`,
+    [req.body.email],
+    (err, result) => {
+      // user does not exists
+      if (err) {
+        throw err;
+        return errorResponse(res, 400, false, err);
       }
-    );
+      if (!result.length) {
+        const message = "Invalid credentials!";
+        return errorResponse(res, 400, false, message);
+      }
+
+      // check password
+      if (result) {
+        let roleId = 3;
+        if(result[0].role) {
+          roleId = +result[0].role;
+        }
+        const token = jwt.sign(
+          {
+            email: result[0].email,
+            userId: result[0].id,
+            role: roleId,
+          },
+          "SECRETKEY",
+          {
+            expiresIn: "7d",
+          }
+        );
+        db.query(
+          `INSERT INTO user_tokens (user_id, token, created_at,updated_at) VALUES (?,?,?,?)`,
+          [result[0].id, token, created, created]
+        );
+        return res.status(200).send({
+          statusCode: 200,
+          success: true,
+          message: "success",
+          token,
+          user: result[0],
+        });
+      }
+      const message = "Invalid credentials!";
+      return errorResponse(res, 400, false, message);
+    }
+  );
+});
+
+router.get("/secret-route", userMiddleware.isLoggedIn, (req, res, next) => {
+  return res.status(200).send({
+    statusCode: 200,
+    success: true,
+    message: "Authorized!",
   });
-  
-  router.get('/secret-route', userMiddleware.isLoggedIn, (req, res, next) => {
-    return res.status(200).send({
-        statusCode:200,
-        success:true,
-        message: "Authorized!"
-    });
-  });
-module.exports = router; 
+});
+module.exports = router;

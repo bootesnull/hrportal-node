@@ -8,14 +8,14 @@ module.exports = {
     // username min length 3
     if (!req.body.email || req.body.email.length < 3) {
       return res.status(400).send({
-        msg: 'Please enter a username with min. 3 chars'
+        message: 'Please enter a username with min. 3 chars'
       });
     }
 
     // password min 6 chars
     if (!req.body.password || req.body.password.length < 6) {
       return res.status(400).send({
-        msg: 'Please enter a password with min. 6 chars'
+        message: 'Please enter a password with min. 6 chars'
       });
     }
 
@@ -25,7 +25,7 @@ module.exports = {
       req.body.password != req.body.password_repeat
     ) {
       return res.status(400).send({
-        msg: 'Both passwords must match'
+        message: 'Both passwords must match'
       });
     }
 
@@ -48,7 +48,7 @@ module.exports = {
             return res.status(401).send({
               statusCode:401,
               success:false,
-              msg: 'session expired!'
+              message: 'Your session is not valid!'
             });
         }
     },
@@ -80,10 +80,10 @@ module.exports = {
               // let  configEmail = config.super_admin_email1;
               // let  configEmail = config.super_admin_email1;
               if(roleId !== 1){
-                return res.status(401).send({
-                  statusCode:401,
+                return res.status(403).send({
+                  statusCode:403,
                   success:false,
-                  msg: 'Not authorized!'
+                  message: 'Not authorized!'
                 });
               }
               next();
@@ -91,7 +91,7 @@ module.exports = {
             return res.status(401).send({
               statusCode:401,
               success:false,
-              msg: 'Your session is not valid!'
+              message: 'Your session is not valid!'
             });
           }
     }

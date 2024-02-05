@@ -86,7 +86,7 @@ module.exports = {
             }
             
         } catch (error) {
-            const message = "Something went wrong!";
+            const message = error.sqlMessage || "Something went wrong!";
             return errorResponse(res,500,false,message);
         }
     },

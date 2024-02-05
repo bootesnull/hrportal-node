@@ -20,7 +20,7 @@ module.exports = {
         checkIn(id, 1,(err,results) => {
           
             if(err){
-                const message = "Something went wrong!";
+                const message =  err.sqlMessage || "Something went wrong!";
                 return errorResponse(res,500,false,message);
                
             }
@@ -28,7 +28,7 @@ module.exports = {
             return res.status(201).json({
                 statusCode:201,
                 success:true,
-                message:"checkin successfully",
+                message:"checkin successful",
                 checkInTime: results
             });
         })
@@ -46,7 +46,7 @@ module.exports = {
             return res.status(201).json({
                 statusCode:201,
                 success:true,
-                message:"checkout successfully",
+                message:"checkout successful",
                 checkoutTime: results,
                 totalTime: "6:30:00"
             });

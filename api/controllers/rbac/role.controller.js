@@ -21,15 +21,15 @@ module.exports = {
      createRole: (req,res)=>{
         try {
             const body = req.body;
-            if(body.name !== ""){
+            if(body.name){
                 rbacServices.roleNameExist(body.name,(err,results)=>{
                     if(results){
-                        const message = "Role has been  already created!";
-                        return errorResponse(res,500,false,message);
+                        const message = "Role has been already created!";
+                        return errorResponse(res,400,false,message);
                     }else{
                         rbacServices.createRoleQuery(body, (err,results)=>{
                             if(err){
-                                const message = "Something went wrong!";
+                                const message = err.sqlMessage || "Something went wrong!";
                                 return errorResponse(res,500,false,message);
                             }
                             return res.status(201).json({
@@ -41,11 +41,11 @@ module.exports = {
                     }
                 })
             }else{
-                const message = "Name does not empty!";
-                return errorResponse(res,500,false,message);
+                const message = "Name can not be empty!";
+                return errorResponse(res,400,false,message);
             }
         } catch (error) {
-            const message = "Something went wrong!";
+            const message = error.sqlMessage || "Something went wrong!";
             return errorResponse(res,500,false,message);
         }
     },
@@ -57,7 +57,7 @@ module.exports = {
                 return res.status(200).json({
                     statusCode:200,
                     success:true,
-                    message: "Role has been updated successfully.",
+                    message: "Roles fetched successfully.",
                     data: responseData
                 }); 
             }else{
@@ -75,13 +75,13 @@ module.exports = {
 
         try {
             const body = req.body;
-            if(body.id!== "" && body.name !== ""){
+            if(body.id && body.name){
 
                 const checkUpdateResponse = await rbacServices.queryUpdateRole(body)
                 if(checkUpdateResponse){
     
-                    return res.status(201).json({
-                        statusCode:201,
+                    return res.status(200).json({
+                        statusCode:200,
                         success:true,
                         message: "Role has been updated successfully.",
                     });
@@ -106,7 +106,7 @@ module.exports = {
                 return res.status(201).json({
                     statusCode:201,
                     success:true,
-                    message: "Role has been updated successfully.",
+                    message: "Role has been fetched successfully.",
                     data: viewResponse
                 });  
             }else{
@@ -123,8 +123,8 @@ module.exports = {
             let data = req.body
             const statusUpdateResponse = await rbacServices.roleStatusUpdate(data)
             if(statusUpdateResponse){
-                return res.status(201).json({
-                    statusCode:201,
+                return res.status(200).json({
+                    statusCode:200,
                     success:true,
                     message: "Role status has been updated successfully.",
                 });   
