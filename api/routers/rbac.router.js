@@ -884,9 +884,134 @@ router.put('/allow-role-permission/update-status',userMiddleware.isAdmin,rolePer
 // router.delete('/allow-role-permission/delete',userMiddleware.isAdmin,deleteAllowRolePermission);
 
 
-// //Route for assign role of users
+// Routes for assigning roles to users
+/**
+ * @swagger
+ * /rbac/assign-role/assign:
+ *   post:
+ *     summary: Assign role to user
+ *     tags: [Roles]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               role_id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the role
+ *               user_id:
+ *                type: number
+ *                example: 10
+ *                description: ID of the user
+ *     responses:
+ *       200:
+ *         description: On successful assign of role.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role has been asssigned successfully.
+ *       400:
+ *         description: When role_id or user_id does not exist.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Role id does not exist! or User does not exist!
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.post("/assign-role/assign", userMiddleware.isAdmin,assignRole.assignRoleToUser)
-router.get("/assign-role/edit-role", userMiddleware.isAdmin,assignRole.editAssignRole)
+
+/**
+ * @swagger
+ * /rbac/assign-role/edit-role:
+ *   post:
+ *     summary: Edit assigned role to user
+ *     tags: [Roles]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               role_id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the role
+ *               user_id:
+ *                type: number
+ *                example: 10
+ *                description: ID of the user
+ *     responses:
+ *       200:
+ *         description: On successful edit of assigned role.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Role has been editted successfully.
+ *       400:
+ *         description: When role_id or user_id does not exist.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Role id does not exist! or User does not exist!
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
+router.post("/assign-role/edit-role", userMiddleware.isAdmin,assignRole.editAssignRole)
 // router.delete("/remove-role", userMiddleware.isAdmin,removeRole)
 
 

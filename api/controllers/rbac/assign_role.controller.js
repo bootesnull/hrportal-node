@@ -22,8 +22,8 @@ module.exports = {
 
                         const saveResponse = await rbacServices.assignRoleToUserService(body)
                         if(saveResponse){
-                            return res.status(201).json({
-                                statusCode:201,
+                            return res.status(200).json({
+                                statusCode:200,
                                 success:true,
                                 message: "Role has been asssigned successfully.",
                             });   
@@ -32,12 +32,12 @@ module.exports = {
                             return errorResponse(res,500,false,message); 
                         }
                     }else{
-                        const message = "Role id does not exit!";
-                        return errorResponse(res,500,false,message); 
+                        const message = "Role id does not exist!";
+                        return errorResponse(res,400,false,message);
                     }
                 }else{
                     const message = "User does not exist!";
-                    return errorResponse(res,500,false,message); 
+                    return errorResponse(res,400,false,message); 
                 }
             }
         } catch (error) {
@@ -56,10 +56,10 @@ module.exports = {
                     if(checkRoleId){
                         const saveResponse = await rbacServices.assignRoleToUserService(body)
                         if(saveResponse){
-                            return res.status(201).json({
-                                statusCode:201,
+                            return res.status(200).json({
+                                statusCode:200,
                                 success:true,
-                                message: "Role has been asssigned successfully.",
+                                message: "Role has been editted successfully.",
                             });   
                         }else{
                             const message = "Something went wrong!";
@@ -67,11 +67,11 @@ module.exports = {
                         }
                     }else{
                         const message = "Role id does not exist!";
-                        return errorResponse(res,500,false,message);
+                        return errorResponse(res,400,false,message);
                     }
                 }else{
                     const message = "User id does not exist!";
-                    return errorResponse(res,500,false,message);
+                    return errorResponse(res,400,false,message);
                 }        
             }
         } catch (error) {
