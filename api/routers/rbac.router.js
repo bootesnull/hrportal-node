@@ -72,10 +72,78 @@ const userMiddleware = require('../middleware/auth')
  *           description: The date the role was last updated
  *       example:
  *         id: 1
- *         name: Test Role
+ *         permission_name: Test Permission
+ *         parent: 1
  *         status: 1
  *         created_at: 2023-04-06T12:21:27.000Z
  *         updated_at: 2024-02-01T11:03:55.000Z
+ */
+
+// Common API responses
+/**
+ * @swagger
+ * components:
+ *   responses:
+ *     Unauthenticated:
+ *         description: When user's session is expired.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 401
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Your session is not valid!
+ */
+
+/**
+ * @swagger
+ * components:
+ *   responses:
+ *     Unauthorized:
+ *         description: When logged in user is not an admin user.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 403
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Not authorized!
+ */
+
+/**
+ * @swagger
+ * components:
+ *   responses:
+ *     InternalServerError:
+ *         description: Some server error.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 500
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Something went wrong!
  */
 
 /**
@@ -137,54 +205,11 @@ const userMiddleware = require('../middleware/auth')
  *                type: string
  *                example: Role has been already created!
  *       401:
- *         description: When user's session is expired.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 401
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Your session is not valid!
+ *        $ref: '#/components/responses/Unauthenticated'
  *       403:
- *         description: When logged in user is not an admin user.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 403
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Not authorized!
- *
+ *        $ref: '#/components/responses/Unauthorized'
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.post('/role/store',userMiddleware.isAdmin,role.createRole);
@@ -217,54 +242,11 @@ router.post('/role/store',userMiddleware.isAdmin,role.createRole);
  *                 items:
  *                  $ref: '#/components/schemas/Role'
  *       401:
- *         description: When user's session is expired.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 401
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Your session is not valid!
+ *        $ref: '#/components/responses/Unauthenticated'
  *       403:
- *         description: When logged in user is not an admin user.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 403
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Not authorized!
- *
+ *        $ref: '#/components/responses/Unauthorized'
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.get('/role/list',userMiddleware.isAdmin,role.getAllRole)
@@ -308,54 +290,11 @@ router.get('/role/list',userMiddleware.isAdmin,role.getAllRole)
  *                type: string
  *                example: Role has been updated successfully.
  *       401:
- *         description: When user's session is expired.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 401
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Your session is not valid!
+ *        $ref: '#/components/responses/Unauthenticated'
  *       403:
- *         description: When logged in user is not an admin user.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 403
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Not authorized!
- *
+ *        $ref: '#/components/responses/Unauthorized'
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.post('/role/edit',userMiddleware.isAdmin,role.roleEdit)
@@ -393,54 +332,11 @@ router.post('/role/edit',userMiddleware.isAdmin,role.roleEdit)
  *               data:
  *                  $ref: '#/components/schemas/Role'
  *       401:
- *         description: When user's session is expired.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 401
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Your session is not valid!
+ *        $ref: '#/components/responses/Unauthenticated'
  *       403:
- *         description: When logged in user is not an admin user.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 403
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Not authorized!
- *
+ *        $ref: '#/components/responses/Unauthorized'
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.get('/role/view',userMiddleware.isAdmin,role.viewRoleById)
@@ -484,54 +380,11 @@ router.get('/role/view',userMiddleware.isAdmin,role.viewRoleById)
  *                type: string
  *                example: Role status has been updated successfully.
  *       401:
- *         description: When user's session is expired.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 401
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Your session is not valid!
+ *        $ref: '#/components/responses/Unauthenticated'
  *       403:
- *         description: When logged in user is not an admin user.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 403
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Not authorized!
- *
+ *        $ref: '#/components/responses/Unauthorized'
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.put('/role/update-status',userMiddleware.isAdmin,role.changeStatus)
@@ -581,7 +434,7 @@ router.put('/role/update-status',userMiddleware.isAdmin,role.changeStatus)
  *                type: string
  *                example: Permission has been created successfully.
  *       400:
- *         description: When no role name is sent or role with same name already exist.
+ *         description: When no permission name is sent or permission with same name already exist.
  *         content:
  *           application/json:
  *            schema:
@@ -595,62 +448,190 @@ router.put('/role/update-status',userMiddleware.isAdmin,role.changeStatus)
  *                example: false
  *               message:
  *                type: string
- *                example: Role has been already created!
+ *                example: Permission name can not be empty! or Permission has been already created!
  *       401:
- *         description: When user's session is expired.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 401
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Your session is not valid!
+ *        $ref: '#/components/responses/Unauthenticated'
  *       403:
- *         description: When logged in user is not an admin user.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 403
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Not authorized!
- *
+ *        $ref: '#/components/responses/Unauthorized'
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.post('/permission/store', userMiddleware.isAdmin, permission.storePermission)
+
+/**
+ * @swagger
+ * /rbac/permission/list:
+ *   get:
+ *     summary: Get list of all permissions
+ *     tags: [Permissions]
+ *     responses:
+ *       200:
+ *         description: On successfully getting a list of permissions.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Permissions fetched successfully.
+ *               data:
+ *                 type: array
+ *                 items:
+ *                  $ref: '#/components/schemas/Permission'
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.get('/permission/list', userMiddleware.isAdmin, permission.permissionList)
+
+/**
+ * @swagger
+ * /rbac/permission/get-by-id?id=1:
+ *   get:
+ *     summary: Get permission by id
+ *     tags: [Permissions]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the permission to get.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: On successfully getting the permission.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Permission has been fetched successfully.
+ *               data:
+ *                  $ref: '#/components/schemas/Permission'
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.get('/permission/get-by-id', userMiddleware.isAdmin, permission.permissionViewById)
+
+/**
+ * @swagger
+ * /rbac/permission/edit:
+ *   post:
+ *     summary: Edit a permission
+ *     tags: [Permissions]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                type: number
+ *                example: 1
+ *                description: Permission ID
+ *               permission_name:
+ *                type: string
+ *                example: Test Permission
+ *                description: Permission name
+ *     responses:
+ *       200:
+ *         description: On successful edit of permission.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Permission has been updated successfully.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.post('/permission/edit', userMiddleware.isAdmin, permission.permissionEdit)
+
+/**
+ * @swagger
+ * /rbac/permission/update-status:
+ *   put:
+ *     summary: Update permission status
+ *     tags: [Permissions]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                type: number
+ *                example: 1
+ *                description: Permission ID
+ *               value:
+ *                type: number
+ *                example: 1
+ *                description: New value for status
+ *     responses:
+ *       200:
+ *         description: On successful update of permission status.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Permission status has been changed successfully.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       403:
+ *        $ref: '#/components/responses/Unauthorized'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.put('/permission/update-status', userMiddleware.isAdmin, permission.permissionUpdateStatus)
 
 // //Rout role permisssion

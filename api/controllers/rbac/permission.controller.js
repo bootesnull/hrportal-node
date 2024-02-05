@@ -37,7 +37,7 @@ module.exports = {
         }
       );
     } else {
-      const message = "Name can not be empty!";
+      const message = "Permission name can not be empty!";
       return errorResponse(res, 400, false, message);
     }
   },
@@ -49,7 +49,7 @@ module.exports = {
         return res.status(200).json({
           statusCode: 200,
           success: true,
-          message: "Permission  has been fetched successfully.",
+          message: "Permissions fetched successfully.",
           data: dataResponse,
         });
       } else {
@@ -107,8 +107,8 @@ module.exports = {
       const statusResponse = await rbacServices.permissionChangeStatus(body);
 
       if (statusResponse) {
-        return res.status(201).json({
-          statusCode: 201,
+        return res.status(200).json({
+          statusCode: 200,
           success: true,
           message: "Permission status has been changed successfully.",
         });

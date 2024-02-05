@@ -10,8 +10,8 @@ const attendenceRouter = require("../api/routers/attendence.router")
 const rbac = require("../api/routers/rbac.router")
 
 const acl = require('express-acl');
-/* GET home page. */
 
+/* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
