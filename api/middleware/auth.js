@@ -48,7 +48,7 @@ module.exports = {
             return res.status(401).send({
               statusCode:401,
               success:false,
-              message: 'session expired!'
+              message: 'Your session is not valid!'
             });
         }
     },

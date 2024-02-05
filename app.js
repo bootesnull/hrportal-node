@@ -38,7 +38,6 @@ const options = {
         url: "http://localhost:3000/api",
       },
     ],
-    basePath: '/abc',
     components: {
       securitySchemes: {
         bearerAuth: {

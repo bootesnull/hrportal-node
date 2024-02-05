@@ -36,10 +36,7 @@
  *         firebase_token: eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4ZjM4ODM0NjhmYzY1OWF
  *         created_at: 2023-04-06T12:21:27.000Z
  *         updated_at: 2024-02-01T11:03:55.000Z
- */
-
-/**
- * @swagger
+ * 
  * tags:
  *   name: Auth
  *   description: API endpoints for authentication
@@ -115,21 +112,7 @@ const config = require("../../config/config");
  *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYXJhbnZlZXJra2sxQGJvb3Rlc251bGwuY29tIiwidXNlcklkIjo5LCJyb2xlIjozLCJpYXQiOjE3MDY4NTg1NTgsImV4cCI6MTcwNzQ2MzM1OH0.fPPB0isWs761XXKPI4Q3WS3OAQDJx5d-4BEQbkS0twc
  *
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.post("/sign-up", createUser);
@@ -189,21 +172,7 @@ router.post("/sign-up", createUser);
  *                type: message
  *                example: Invalid credentials!
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.post("/login", (req, res, next) => {

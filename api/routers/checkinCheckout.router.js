@@ -11,6 +11,40 @@ const {userCheckIn,userCheckOut} = require('../controllers//users/checkInCheckou
  * tags:
  *   name: Checkin Checkout
  *   description: API endpoints for checkin and checkout
+ * 
+ *   responses:
+ *     Unauthenticated:
+ *         description: When user's session is expired.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 401
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Session expired!
+ *     InternalServerError:
+ *         description: Some server error.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 500
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Something went wrong!
  */
 
 /**
@@ -40,38 +74,9 @@ const {userCheckIn,userCheckOut} = require('../controllers//users/checkInCheckou
  *                type: string
  *                example: 14:23:03
  *       401:
- *         description: When user's session is expired.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 401
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Session expired!
- *                
+ *        $ref: '#/components/responses/Unauthenticated'                
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.post('/checkin', userMiddleware.isLoggedIn, userCheckIn);
@@ -103,38 +108,10 @@ router.post('/checkin', userMiddleware.isLoggedIn, userCheckIn);
  *                type: string
  *                example: 17:23:03
  *       401:
- *         description: When user's session is expired.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: integer
- *                example: 401
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: string
- *                example: Session expired!
+ *        $ref: '#/components/responses/Unauthenticated' 
  *                
  *       500:
- *         description: Some server error.
- *         content:
- *           application/json:
- *            schema:
- *             type: object
- *             properties:
- *               statusCode:
- *                type: number
- *                example: 500
- *               success:
- *                type: boolean
- *                example: false
- *               message:
- *                type: message
- *                example: Something went wrong!
+ *        $ref: '#/components/responses/InternalServerError'
  *
  */
 router.post('/checkout', userMiddleware.isLoggedIn, userCheckOut);
