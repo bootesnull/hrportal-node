@@ -126,6 +126,61 @@ const upload = multer({
  *
  */
 router.post('/leave-type/store', middleware.isLoggedIn, leaveTypeController.storeLeaveType)
+
+/**
+ * @swagger
+ * /leaves/leave-type/view?id=1:
+ *   get:
+ *     summary: Get leave type by id
+ *     tags: [Leave Type]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the leave type to get.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: On successfully getting the leave type.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave type has been fetched successfully.
+ *               data:
+ *                  $ref: '#/components/schemas/LeaveType'
+ *       400:
+ *         description: When no leave type ID is sent or no leave type exist for the provided ID.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Please provide leave type ID. or No leave type with id 1.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.get('/leave-type/view', middleware.isLoggedIn, leaveTypeController.viewLeaveType)
 router.put('/leave-type/edit', middleware.isLoggedIn, leaveTypeController.editLeaveType)
 router.put('/leave-type/status-change', middleware.isLoggedIn, leaveTypeController.statusChangeLeaveType)

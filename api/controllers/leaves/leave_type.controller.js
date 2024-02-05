@@ -34,23 +34,23 @@ module.exports = {
     viewLeaveType : async(req,res)=>{
         try {
             let id = req.query.id
-            if(id !== null){
+            if(id){
                 let viewLeaveTypeResponse = await leaveService.getLeaveType(id)
                
                 if(viewLeaveTypeResponse){
                     return res.status(200).json({
                         statusCode:200,
                         success:true,
-                        message:"leave type has been fetched successfully.",
+                        message:"Leave type has been fetched successfully.",
                         data: viewLeaveTypeResponse
                     });
                 }else{
-                    let message = "Id does not exist!";
-                    return errorResponse(res,500,false,message); 
+                    let message = `No leave type with id ${id}.`;
+                    return errorResponse(res,400,false,message); 
                 }
             }else{
-                let message = "Id does not empty!";
-                return errorResponse(res,500,false,message); 
+                let message = "Please provide leave type ID.";
+                return errorResponse(res,400,false,message); 
             }
         } catch (error) {
             let message = "Something went wrong!";
