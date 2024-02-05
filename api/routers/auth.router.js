@@ -15,9 +15,40 @@
  *         name:
  *           type: string
  *           description: The name of the user
+ *         last_name:
+ *           type: string
+ *           description: The last name of the user
  *         email:
  *           type: string
  *           description: Email of the user
+ *         password:
+ *           type: string
+ *           description: Hashed password of the user
+ *         email_verified_at:
+ *           type: string
+ *           format: date
+ *           description: The date email was verified by user
+ *         is_admin:
+ *           type: number
+ *           description: Flag representing if the user is a admin user
+ *         role:
+ *           type: number
+ *           description: ID of the role assigned to the user
+ *         status:
+ *           type: number
+ *           description: Status of the user
+ *         gender:
+ *           type: string
+ *           description: Gender the user
+ *         phone:
+ *           type: number
+ *           description: Phone number of the user
+ *         is_deleted:
+ *           type: number
+ *           description: Flag representing if the user is deleted or active
+ *         remember_token:
+ *           type: number
+ *           description: Remember token of the user
  *         firebase_token:
  *           type: string
  *           description: Firebase token of the user
@@ -29,13 +60,27 @@
  *           type: string
  *           format: date
  *           description: The date the user was last updated
+ *         organization_id:
+ *           type: number
+ *           description: ID of the organization assigned to user
  *       example:
  *         id: 1
  *         name: Test User
+ *         last_name: Test User Last Name
  *         email: testuser@bootesnull.com
+ *         password: 5f4dcc3b5aa765d61d8327deb882cf99
+ *         email_verified_at: 2024-02-01T11:03:55.000Z
+ *         is_admin: 0
+ *         role: 1
+ *         status: 1
+ *         gender: Male
+ *         phone: 9867564567
+ *         is_deleted: 0
+ *         remember_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzNDU2Nzg5LCJuYW1lIjoiSm9zZXBoIn0.OpOSSw7e485LOP5PrzScxHb7SR6sAOMRckfFwi4rp7o
  *         firebase_token: eyJhbGciOiJSUzI1NiIsImtpZCI6IjM4ZjM4ODM0NjhmYzY1OWF
  *         created_at: 2023-04-06T12:21:27.000Z
  *         updated_at: 2024-02-01T11:03:55.000Z
+ *         organization_id: 1
  * 
  * tags:
  *   name: Auth

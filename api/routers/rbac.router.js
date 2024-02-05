@@ -986,7 +986,7 @@ router.post("/assign-role/assign", userMiddleware.isAdmin,assignRole.assignRoleT
  *                example: true
  *               message:
  *                type: string
- *                example: Role has been editted successfully.
+ *                example: Role has been edited successfully.
  *       400:
  *         description: When role_id or user_id does not exist.
  *         content:

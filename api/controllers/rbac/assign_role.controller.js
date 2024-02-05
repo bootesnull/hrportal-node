@@ -59,7 +59,7 @@ module.exports = {
                             return res.status(200).json({
                                 statusCode:200,
                                 success:true,
-                                message: "Role has been editted successfully.",
+                                message: "Role has been edited successfully.",
                             });   
                         }else{
                             const message = "Something went wrong!";

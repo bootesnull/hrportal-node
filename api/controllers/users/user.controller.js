@@ -180,38 +180,38 @@ module.exports = {
                         const message = err.sqlMessage ||"Something went wrong!"
                         return errorResponse(res,500,false,message)
                      }
-                     return res.status(201).json({
-                        statusCode:201,
+                     return res.status(200).json({
+                        statusCode:200,
                         success:true,
-                        message:"User details have been created successfully."
+                        message:"User details have been edited successfully."
                     })
                  })
              }else{
                 const message = "User id does not exist!"
-                return errorResponse(res,500,false,message)
+                return errorResponse(res,400,false,message)
              }
          })
      },
      userUpdateStatus: (req,res)=>{
          const body = req.body
          const userId = req.userData.userId;
-         if(userId !== "" && body.project_name !== "" && body.working_hours !== "" && body.description !== ""){
+         if(userId && body.project_name && body.working_hours && body.description && body.ticket_number){
 
             userService.userUpdateStatusQuery(body,userId,(err,results)=>{
     
                  if(err){
-                    const message = "Something went wrong!"
+                    const message = err.sqlMessage || "Something went wrongg!"
                     return errorResponse(res,500,false,message)
                  }
-                 return res.status(201).json({
-                    statusCode:201,
+                 return res.status(200).json({
+                    statusCode:200,
                     success:true,
                     message:"Status has been updated successfully."
                 })
              })
          }else{
-            const message = "Something went wrong!"
-            return errorResponse(res,500,false,message)
+            const message = "Please provide all values."
+            return errorResponse(res,400,false,message)
          }
      },
     //  const userId = req.userData.userId;
@@ -223,19 +223,19 @@ module.exports = {
             let response = await rbacServices.checkPermissionService(userId,data)
             
             if(response){
-                return res.status(201).json({
-                    statusCode:201,
+                return res.status(200).json({
+                    statusCode:200,
                     success:true,
-                    message: "Permission grented.",
+                    message: "Permission granted.",
                 });   
             }else{
-                const message = "Not  authorized!";
-                return errorResponse(res,500,false,message);
+                const message = "Not authorized!";
+                return errorResponse(res,403,false,message);
             }
            
         
         } catch (error) {
-            const message = "Not authorized";
+            const message = "Something went wrong!";
             return errorResponse(res,500,false,message);
         }
     }

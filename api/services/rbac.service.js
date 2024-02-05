@@ -271,6 +271,8 @@ module.exports = {
               let arrInCheck = result.includes(pId);
               if (arrInCheck) {
                 return resolver(pResults);
+              } else {
+                return resolver(false);
               }
             });
           });
