@@ -90,7 +90,7 @@ const userMiddleware = require('../middleware/auth')
  * @swagger
  * /rbac/role/store:
  *   post:
- *     summary: Endpoint for creating a role
+ *     summary: Create a new role
  *     tags: [Roles]
  *     requestBody:
  *       required: true
@@ -193,7 +193,7 @@ router.post('/role/store',userMiddleware.isAdmin,role.createRole);
  * @swagger
  * /rbac/role/list:
  *   get:
- *     summary: Endpoint for getting a list of all roles
+ *     summary: Get list of all roles
  *     tags: [Roles]
  *     responses:
  *       200:
@@ -273,7 +273,7 @@ router.get('/role/list',userMiddleware.isAdmin,role.getAllRole)
  * @swagger
  * /rbac/role/edit:
  *   post:
- *     summary: Endpoint for editing a role
+ *     summary: Edit a role
  *     tags: [Roles]
  *     requestBody:
  *       required: true
@@ -364,7 +364,7 @@ router.post('/role/edit',userMiddleware.isAdmin,role.roleEdit)
  * @swagger
  * /rbac/role/view?id=1:
  *   get:
- *     summary: Endpoint for a single role by id
+ *     summary: Get role by id
  *     tags: [Roles]
  *     parameters:
  *       - in: query
@@ -449,7 +449,7 @@ router.get('/role/view',userMiddleware.isAdmin,role.viewRoleById)
  * @swagger
  * /rbac/role/update-status:
  *   put:
- *     summary: Endpoint for updating role status
+ *     summary: Update role status
  *     tags: [Roles]
  *     requestBody:
  *       required: true

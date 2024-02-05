@@ -17,7 +17,7 @@ const {userCheckIn,userCheckOut} = require('../controllers//users/checkInCheckou
  * @swagger
  * /checkin-checkout/checkin:
  *   post:
- *     summary: Endpoint for checkin
+ *     summary: Checkin
  *     tags: [Checkin Checkout]
  *     responses:
  *       201:
@@ -80,7 +80,7 @@ router.post('/checkin', userMiddleware.isLoggedIn, userCheckIn);
  * @swagger
  * /checkin-checkout/checkout:
  *   post:
- *     summary: Endpoint for checkout
+ *     summary: Checkout
  *     tags: [Checkin Checkout]
  *     responses:
  *       201:

@@ -66,7 +66,7 @@ const config = require("../../config/config");
  * @swagger
  * /sign-up:
  *   post:
- *     summary: Endpoint for new users to create a account
+ *     summary: Signup
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -138,7 +138,7 @@ router.post("/sign-up", createUser);
  * @swagger
  * /login:
  *   post:
- *     summary: Endpoint for existing users to login
+ *     summary: Login
  *     tags: [Auth]
  *     requestBody:
  *       required: true
