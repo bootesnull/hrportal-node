@@ -182,6 +182,75 @@ router.post('/leave-type/store', middleware.isLoggedIn, leaveTypeController.stor
  *
  */
 router.get('/leave-type/view', middleware.isLoggedIn, leaveTypeController.viewLeaveType)
+
+/**
+ * @swagger
+ * /leaves/leave-type/edit:
+ *   put:
+ *     summary: Edit a leave type
+ *     tags: [Leave Type]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                type: number
+ *                example: 1
+ *                description: Leave Type ID
+ *               leave_type_name:
+ *                type: string
+ *                example: Test Leave Type
+ *                description: Leave type name
+ *               is_paid:
+ *                type: string
+ *                example: "no"
+ *                description: If the leave is paid or not, possible values "yes" or "no"
+ *               allow_number_of_leaves:
+ *                type: number
+ *                example: 5
+ *                description: Allowed number of leaves
+ *     responses:
+ *       200:
+ *         description: On successful edit of leave type.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave type has been updated successfully.
+ *       400:
+ *         description: When required values are not sent or no leave type exist for the provided ID or a leave type with the same name already exist.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Please provide all values. or No leave type with id 1. or Duplicate entry 'Test Leave Type' for key 'leave_types.leave_type_name'
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.put('/leave-type/edit', middleware.isLoggedIn, leaveTypeController.editLeaveType)
 router.put('/leave-type/status-change', middleware.isLoggedIn, leaveTypeController.statusChangeLeaveType)
 router.get('/leave-type/list', middleware.isLoggedIn, leaveTypeController.listLeaveType)

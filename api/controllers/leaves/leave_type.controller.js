@@ -60,29 +60,34 @@ module.exports = {
     editLeaveType: async(req,res)=>{
         try {
             let body = req.body
-            if(body.leave_type_name !== "" && body.is_paid !== ""){
+            if(body.id && body.leave_type_name && body.is_paid && body.allow_number_of_leaves){
                 let checkIdExist = await leaveService.getLeaveType(body.id)
                 if(checkIdExist){
                     let editLeaveTypeResponse = await leaveService.updateLeaveType(body)
                     if(editLeaveTypeResponse){
-                        return res.status(201).json({
-                            statusCode:201,
+                        return res.status(200).json({
+                            statusCode:200,
                             success:true,
-                            message:"leave type has been updated successfully.",
+                            message:"Leave type has been updated successfully.",
                         });
                     }else{
                         let message = "Something went wrong!";
                         return errorResponse(res,500,false,message); 
                     }
                 }else{
-                    let message = "Something went wrong!";
-                    return errorResponse(res,500,false,message); 
+                    let message = `No leave type with id ${body.id}.`;
+                    return errorResponse(res,400,false,message); 
                 }
+            } else {
+                let message = "Please provide all values.";
+                return errorResponse(res,400,false,message);
             }
 
         } catch (error) {
-            let message = "Something went wrong!";
-            return errorResponse(res,500,false,message); 
+            console.log(error);
+            let message = error.sqlMessage || "Something went wrong!";
+            const statusCode = error.code === 'ER_DUP_ENTRY' ? 400 : 500;
+            return errorResponse(res,statusCode,false,message); 
         }
     },
     listLeaveType : async(req,res)=>{
