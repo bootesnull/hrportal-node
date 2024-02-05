@@ -538,6 +538,115 @@ router.put('/role/update-status',userMiddleware.isAdmin,role.changeStatus)
 // router.delete('/role/delete',userMiddleware.isAdmin,deleteRole)
 
  //Route for permissions 
+
+ /**
+ * @swagger
+ * tags:
+ *   name: Permissions
+ *   description: API endpoints for managing permissions
+ */
+
+/**
+ * @swagger
+ * /rbac/permission/store:
+ *   post:
+ *     summary: Create a new permission
+ *     tags: [Permissions]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               permission_name:
+ *                type: string
+ *                example: Test Permission
+ *                description: Permission name
+ *     responses:
+ *       201:
+ *         description: On successful permission creation.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 201
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Permission has been created successfully.
+ *       400:
+ *         description: When no role name is sent or role with same name already exist.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Role has been already created!
+ *       401:
+ *         description: When user's session is expired.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 401
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Your session is not valid!
+ *       403:
+ *         description: When logged in user is not an admin user.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 403
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Not authorized!
+ *
+ *       500:
+ *         description: Some server error.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 500
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Something went wrong!
+ *
+ */
 router.post('/permission/store', userMiddleware.isAdmin, permission.storePermission)
 router.get('/permission/list', userMiddleware.isAdmin, permission.permissionList)
 router.get('/permission/get-by-id', userMiddleware.isAdmin, permission.permissionViewById)

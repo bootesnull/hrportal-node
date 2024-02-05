@@ -114,6 +114,19 @@ function createPemissionQuery(body,callback){
     ); 
 }
 
+function checkPermissionNameExist(permissionName, callback){
+    
+    pool.query(
+        `select * from permissions where permission_name = '${permissionName}'`,
+        (error,results)=>{
+            if(error){
+                return callback(error)
+            }
+           return callback(error,results[0])
+        }
+    )
+}
+
 function listPermissionQuery(callback){
     pool.query(
         `select * from permissions`,
@@ -283,6 +296,7 @@ module.exports = {
     viewByIdQuery,
     roleStatusUpdateQuery,
     createPemissionQuery,
+    checkPermissionNameExist,
     listPermissionQuery,
     viewPermissionQuery,
     updatePermissionQuery,
