@@ -58,6 +58,99 @@ const upload = multer({
  *         status: 1
  *         created_at: 2023-04-06T12:21:27.000Z
  *         updated_at: 2024-02-01T11:03:55.000Z
+ *     Leave:
+ *       type: object
+ *       required:
+ *         - leave_type_name
+ *         - status
+ *       properties:
+ *         id:
+ *           type: number
+ *           description: ID of the leave
+ *         leaves_id:
+ *           type: number
+ *           description: ID of the leave
+ *         leave_type_id:
+ *           type: number
+ *           description: ID of the leave type
+ *         leave_type_name:
+ *           type: string
+ *           description: Name of the leave type
+ *         user_id:
+ *           type: number
+ *           description: ID of the user
+ *         approver:
+ *           type: number
+ *           description: ID of the user who approved the leave
+ *         is_paid:
+ *           type: string
+ *           description: If the leave is paid or not, possible values "yes" or "no"
+ *         allow_number_of_leaves:
+ *           type: number
+ *           description: Allowed number of leaves
+ *         formatedFromDate:
+ *           type: string
+ *           format: date
+ *           description: Formatted start date of the leave
+ *         formatedToDate:
+ *           type: string
+ *           format: date
+ *           description: Formatted end date of the leave
+ *         formatedApplyDate:
+ *           type: string
+ *           format: date
+ *           description: Formatted apply date of the leave
+ *         from_date:
+ *           type: string
+ *           format: date
+ *           description: Unformatted from date of the leave
+ *         to_date:
+ *           type: string
+ *           format: date
+ *           description: Unformatted to date of the leave
+ *         reasons:
+ *           type: string
+ *           description: Reason for the leave
+ *         document:
+ *           type: string
+ *           description: URI of the leave document
+ *         approved_by:
+ *           type: string
+ *           description: Name of the user who approved the leave
+ *         total_leaves_days:
+ *           type: number
+ *           description: Total number of leave days
+ *         leave_status:
+ *           type: string
+ *           description: Status of the leave. Possible values are pending, approved and rejected
+ *         created_at:
+ *           type: string
+ *           format: date
+ *           description: The date the role was created
+ *         updated_at:
+ *           type: string
+ *           format: date
+ *           description: The date the role was last updated
+ *       example:
+ *         id: 1
+ *         leaves_id: 1
+ *         user_id: 1
+ *         approver: 5
+ *         formatedFromDate: 06/02/2024
+ *         formatedToDate: 07/02/2024
+ *         formatedApplyDate: 06/02/2024
+ *         from_date: 2024-02-05T18:30:00.000Z
+ *         to_date: 2024-02-06T18:30:00.000Z
+ *         reasons: Example leave reason.
+ *         document: localhost:3000/documents/documents_1707195438187.png
+ *         leave_type_name: Test Leave Type
+ *         is_paid: yes
+ *         allow_number_of_leaves: 10
+ *         approved_by: Test User
+ *         total_leaves_days: 1
+ *         leave_status: pending
+ *         created_at: 2023-04-06T12:21:27.000Z
+ *         updated_at: 2024-02-01T11:03:55.000Z
  */
 
 //Route for  roles 
@@ -431,6 +524,61 @@ router.get('/leave-type/list', middleware.isLoggedIn, leaveTypeController.listLe
  *
  */
 router.post('/leaves/store', middleware.isLoggedIn, upload.single('documents'), leaves.storeLeave)
+
+/**
+ * @swagger
+ * /leaves/leaves/view:
+ *   get:
+ *     summary: Get leave by id
+ *     tags: [Leaves]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the leave to get.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: On successfully getting the leave.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave data has been fetched successfully.
+ *               data:
+ *                  $ref: '#/components/schemas/Leave'
+ *       400:
+ *         description: When leave ID is not provided or When no leave exist for the provided leave ID.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Please provide leave ID. or No leave with ID 100.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.get('/leaves/view', middleware.isLoggedIn, leaves.viewLeave)
 router.get('/leaves/list', middleware.isLoggedIn, leaves.listLeave)
 router.put('/leaves/status-change', middleware.isLoggedIn, leaves.statusChangedLeave)

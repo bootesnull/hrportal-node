@@ -46,24 +46,28 @@ module.exports = {
         }
     },
     viewLeave : async(req,res)=>{
-
-        try {
-            let id = req.query.id
-            let viewResponse = await leaveService.getByLeaveId(id)
-            if(viewResponse){
-                return res.status(200).json({
-                    statusCode:200,
-                    success:true,
-                    message:"leave data has been fetched successfully.",
-                    data: viewResponse
-                });
-            }else{
-                let message = "Id does not exist!";
+        if(req.query.id) {
+            try {
+                let id = req.query.id
+                let viewResponse = await leaveService.getByLeaveId(id)
+                if(viewResponse){
+                    return res.status(200).json({
+                        statusCode:200,
+                        success:true,
+                        message:"Leave data has been fetched successfully.",
+                        data: viewResponse
+                    });
+                }else{
+                    let message = `No leave with ID ${id}.`;
+                    return errorResponse(res,400,false,message); 
+                }
+            } catch (error) {
+                let message = "Something went wrong!";
                 return errorResponse(res,500,false,message); 
             }
-        } catch (error) {
-            let message = "Something went wrong!";
-            return errorResponse(res,500,false,message); 
+        } else {
+            let message = "Please provide leave ID.";
+            return errorResponse(res,400,false,message);
         }
     },
 

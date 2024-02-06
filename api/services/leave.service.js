@@ -184,9 +184,9 @@ module.exports = {
                 users.name AS approved_by,
                 DATEDIFF(leaves.to_date, leaves.from_date) AS total_leaves_days,
                 CASE
-                    WHEN leaves.approver = 1 THEN 'pending'
-                    WHEN leaves.approver = 2 THEN 'approved'
-                    ELSE 'reject'
+                    WHEN leaves.status = 1 THEN 'pending'
+                    WHEN leaves.status = 2 THEN 'approved'
+                    ELSE 'rejected'
                 END AS leave_status
             FROM
                 leaves
