@@ -77,7 +77,7 @@ module.exports = {
                 return res.status(200).json({
                     statusCode:200,
                     success:true,
-                    message:"users attendence",
+                    message:"User's attendence fetched successfully.",
                     data: arrpush,
                 });
             }else{

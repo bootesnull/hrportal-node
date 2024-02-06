@@ -252,7 +252,7 @@ module.exports = {
                     FROM
                         hrportal.checkin_checkout
                     WHERE
-                        status = 1 AND user_id = 8
+                        status = 1 AND user_id = 10
                     GROUP BY DATE(timestamp)) nt ON nt.nd = DATE(cc.timestamp)
                     INNER JOIN
                     (SELECT 
@@ -260,10 +260,10 @@ module.exports = {
                     FROM
                         hrportal.checkin_checkout
                     WHERE
-                        status = 2 AND user_id = 8
+                        status = 2 AND user_id = 10
                     GROUP BY DATE(timestamp)) ncheckout ON ncheckout.nc = DATE(cc.timestamp)
                 WHERE
-                    cc.user_id = 8
+                    cc.user_id = 10
                 GROUP BY DATE(cc.timestamp)`,
 
                 (error,results)=>{
