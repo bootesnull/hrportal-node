@@ -849,6 +849,59 @@ router.put('/leaves/leave-approve', middleware.isLoggedIn, leaves.approveLeave)
  *
  */
 router.get('/leaves/user-by-leave', middleware.isLoggedIn, leaves.userByLeave)
+
+/**
+ * @swagger
+ * /leaves/leaves/delete-leave:
+ *   delete:
+ *     summary: Delete leave by id
+ *     tags: [Leaves]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         description: Numeric ID of the leave to delete.
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: On successfully deletion of the leave.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave has been deleted successfully.
+ *       400:
+ *         description: When leave ID is not provided or When no leave exist for the provided leave ID or When the leave is rejected or approved.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Please provide leave ID. or No leave with ID 100. or You can't delete the leave after rejection or approval!
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.delete('/leaves/delete-leave', middleware.isLoggedIn, leaves.deleteLeave)
 
 router.post('/leave-type/test-upload', upload.single('documents'), leaveTypeController.testUploadImage)
