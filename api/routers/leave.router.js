@@ -756,6 +756,63 @@ router.put('/leaves/status-change', middleware.isLoggedIn, leaves.statusChangedL
  *
  */
 router.put('/leaves/edit', middleware.isLoggedIn, upload.single('documents'), leaves.editLeave)
+
+/**
+ * @swagger
+ * /leaves/leaves/leave-approve:
+ *   put:
+ *     summary: Approve leave
+ *     tags: [Leaves]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the leave
+ *     responses:
+ *       200:
+ *         description: On successful update of leave status.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave has been approved successfully.
+ *       400:
+ *         description: When leave ID is not provided or no leave exist for the provided ID.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Please provide leave ID. or No leave with id 100.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.put('/leaves/leave-approve', middleware.isLoggedIn, leaves.approveLeave)
 router.get('/leaves/user-by-leave', middleware.isLoggedIn, leaves.userByLeave)
 router.delete('/leaves/delete-leave', middleware.isLoggedIn, leaves.deleteLeave)

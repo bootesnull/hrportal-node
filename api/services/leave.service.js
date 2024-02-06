@@ -254,7 +254,7 @@ module.exports = {
     approveByApproverLeaves: (data,userId)=>{
         return new Promise((resolver,reject)=>{
             pool.query(
-                `update leaves set approver='${userId}', status= '${data.value}' where id = '${data.id}'`,
+                `update leaves set approver='${userId}', status= '2' where id = '${data.id}'`,
                 (error,results)=>{
                     if(error){
                         return reject(error)

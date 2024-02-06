@@ -154,26 +154,31 @@ module.exports = {
         }
     },
     approveLeave: async(req,res)=>{
-        try {
-            let query = req.query;
-            let checkIdexist = await leaveService.getByLeaveId(query.id);
-            if(checkIdexist){
-                let userId = req.userData.userId
-                let approveResponse = await leaveService.approveByApproverLeaves(query, userId)
-                if(approveResponse){
-                    return res.status(200).json({
-                        statusCode:200,
-                        success:true,
-                        message:"leave has been approved successfully.",
-                    });
+        let body = req.body;
+        if(body.id) {
+            try {
+                let checkIdexist = await leaveService.getByLeaveId(body.id);
+                if(checkIdexist){
+                    let userId = req.userData.userId
+                    let approveResponse = await leaveService.approveByApproverLeaves(body, userId)
+                    if(approveResponse){
+                        return res.status(200).json({
+                            statusCode:200,
+                            success:true,
+                            message:"Leave has been approved successfully.",
+                        });
+                    }
+                }else{
+                    let message = `No leave with ID ${body.id}.`;
+                    return errorResponse(res,400,false,message); 
                 }
-            }else{
-                let message = "Id does not exist!";
+            } catch (error) {
+                let message = "Something went wrong!";
                 return errorResponse(res,500,false,message); 
             }
-        } catch (error) {
-            let message = "Something went wrong!";
-            return errorResponse(res,500,false,message); 
+        } else {
+            let message = "Please provide leave ID.";
+            return errorResponse(res,400,false,message); 
         }
     },
     testUploadImage : async(req,res)=>{
