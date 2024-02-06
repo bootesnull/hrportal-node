@@ -23,15 +23,6 @@ const options = {
       title: "HR Portal Express API",
       version: "0.1.0",
       description: "Simple to use HR portal developed on Node.js",
-      // license: {
-      //   name: "MIT",
-      //   url: "https://spdx.org/licenses/MIT.html",
-      // },
-      // contact: {
-      //   name: "LogRocket",
-      //   url: "https://logrocket.com",
-      //   email: "info@email.com",
-      // },
     },
     servers: [
       {
