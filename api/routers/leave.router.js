@@ -350,6 +350,86 @@ router.put('/leave-type/status-change', middleware.isLoggedIn, leaveTypeControll
  */
 router.get('/leave-type/list', middleware.isLoggedIn, leaveTypeController.listLeaveType)
 
+/**
+ * @swagger
+ * tags:
+ *   name: Leaves
+ *   description: API endpoints for managing leaves
+ */
+
+/**
+ * @swagger
+ * /leaves/leaves/store:
+ *   post:
+ *     summary: Create a new leave
+ *     tags: [Leaves]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               leave_type_id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the leave type
+ *               from_date:
+ *                type: string
+ *                format: date
+ *                example: 6/2/2024
+ *                description: Start date of leave
+ *               to_date:
+ *                type: string
+ *                format: date
+ *                example: 6/2/2024
+ *                description: End date of leave
+ *               reasons:
+ *                type: string
+ *                example: Feeling sick.
+ *                description: Reason for the leave
+ *               documents:
+ *                type: string
+ *                format: binary
+ *     responses:
+ *       201:
+ *         description: On successful leave creation.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 201
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave has been saved successfully.
+ *       400:
+ *         description: When required values are not provided or When no leave type exist for the provided leave type ID or When selected file is not of .png, .jpg or .jpeg format.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Please provide all values. or Selected leave type does not exist! or Only .png, .jpg and .jpeg format allowed!
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.post('/leaves/store', middleware.isLoggedIn, upload.single('documents'), leaves.storeLeave)
 router.get('/leaves/view', middleware.isLoggedIn, leaves.viewLeave)
 router.get('/leaves/list', middleware.isLoggedIn, leaves.listLeave)
