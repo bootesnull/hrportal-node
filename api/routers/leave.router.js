@@ -677,6 +677,84 @@ router.get('/leaves/list', middleware.isLoggedIn, leaves.listLeave)
  *
  */
 router.put('/leaves/status-change', middleware.isLoggedIn, leaves.statusChangedLeave)
+
+/**
+ * @swagger
+ * /leaves/leaves/edit:
+ *   put:
+ *     summary: Edit a leave
+ *     tags: [Leaves]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               leave_id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the leave
+ *               leave_type_id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the leave type
+ *               from_date:
+ *                type: string
+ *                format: date
+ *                example: 6/2/2024
+ *                description: Start date of leave
+ *               to_date:
+ *                type: string
+ *                format: date
+ *                example: 6/2/2024
+ *                description: End date of leave
+ *               reasons:
+ *                type: string
+ *                example: Feeling sick.
+ *                description: Reason for the leave
+ *               documents:
+ *                type: string
+ *                format: binary
+ *     responses:
+ *       200:
+ *         description: On successful leave update.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave has been updated successfully.
+ *       400:
+ *         description: When required values are not provided or When no leave type exist for the provided leave type ID or When selected file is not of .png, .jpg or .jpeg format or When no leave exist for the provided leave ID.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Please provide all values. or Selected leave type does not exist! or Only .png, .jpg and .jpeg format allowed! or No leave with ID 100.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.put('/leaves/edit', middleware.isLoggedIn, upload.single('documents'), leaves.editLeave)
 router.put('/leaves/leave-approve', middleware.isLoggedIn, leaves.approveLeave)
 router.get('/leaves/user-by-leave', middleware.isLoggedIn, leaves.userByLeave)

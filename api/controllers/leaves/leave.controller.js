@@ -88,46 +88,42 @@ module.exports = {
         }
     },
     editLeave: async(req,res)=>{
-        try {
-            let body = req.body
-            let userId = req.userData.userId
-            let checkIdExist = await leaveService.getLeaveType(req.body.leave_type_id)
-            if(checkIdExist){
-                if(body.from_date !== "" && body.to_date !== "" ){
+        let body = req.body
+        if(body.leave_id && body.leave_type_id && body.from_date && body.to_date && body.reasons && body.reasons) {
+            try {
+                let userId = req.userData.userId
+                let checkIdExist = await leaveService.getLeaveType(req.body.leave_type_id)
+                if(checkIdExist){
+                    let storeResponse;
+                        if(req.file){
+                            var host = req.get('host');
+                            imageUrl = (req.file.filename !== "") ? `${host}/documents/${req.file.filename}` : "null"
+                            storeResponse = await leaveService.updateLeave(body,userId,imageUrl)
+                        }else{
+                            storeResponse = await leaveService.updateLeave(body,userId)
+                        }
 
-                    if(req.file){
-                        var host = req.get('host');
-                        imageUrl = (req.file.filename !== "") ? `${host}/documents/${req.file.filename}` : "null"
-                        let storeResponse = await leaveService.updateLeave(body,userId,imageUrl)
-                        if(storeResponse){
-                            return res.status(201).json({
-                                statusCode:201,
+                        if(storeResponse.affectedRows){
+                            return res.status(200).json({
+                                statusCode:200,
                                 success:true,
-                                message:"leave has been updated successfully.",
+                                message:"Leave has been updated successfully.",
                             });
+                        } else {
+                            let message = `No leave with ID ${body.leave_id}.`;
+                            return errorResponse(res,400,false,message);
                         }
-                    }else{
-                        let storeResponse = await leaveService.updateLeave(body,userId)
-                        if(storeResponse){
-                            return res.status(201).json({
-                                statusCode:201,
-                                success:true,
-                                message:"leave has been updated successfully.",
-                            });
-                        }
-                    }
-                   
                 }else{
-                    let message = "from date and to date field do not empty!";
-                    return errorResponse(res,500,false,message);
+                    let message = "Selected leave type does not exist!";
+                    return errorResponse(res,400,false,message);
                 }
-            }else{
-                let message = "leave type name does not exist!";
+            } catch (error) {
+                let message = "Something went wrong!";
                 return errorResponse(res,500,false,message);
             }
-        } catch (error) {
-            let message = "Something went wrong!";
-            return errorResponse(res,500,false,message);
+        } else {
+            let message = "Please provide all values.";
+            return errorResponse(res,400,false,message);
         }
 
     },
