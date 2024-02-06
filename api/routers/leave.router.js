@@ -580,6 +580,40 @@ router.post('/leaves/store', middleware.isLoggedIn, upload.single('documents'), 
  *
  */
 router.get('/leaves/view', middleware.isLoggedIn, leaves.viewLeave)
+
+/**
+ * @swagger
+ * /leaves/leaves/list:
+ *   get:
+ *     summary: Get list of all leaves
+ *     tags: [Leaves]
+ *     responses:
+ *       200:
+ *         description: On successfully getting a list of leaves.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leaves data has been fetched successfully.
+ *               data:
+ *                 type: array
+ *                 items:
+ *                  $ref: '#/components/schemas/Leave'
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.get('/leaves/list', middleware.isLoggedIn, leaves.listLeave)
 router.put('/leaves/status-change', middleware.isLoggedIn, leaves.statusChangedLeave)
 router.put('/leaves/edit', middleware.isLoggedIn, upload.single('documents'), leaves.editLeave)

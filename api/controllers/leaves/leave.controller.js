@@ -78,7 +78,7 @@ module.exports = {
                 return res.status(200).json({
                     statusCode:200,
                     success:true,
-                    message:"leave data has been fetched successfully.",
+                    message:"Leaves data has been fetched successfully.",
                     data: listResponse
                 });
             }
