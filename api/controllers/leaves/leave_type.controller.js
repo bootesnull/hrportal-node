@@ -118,7 +118,7 @@ module.exports = {
                         return res.status(200).json({
                             statusCode:200,
                             success:true,
-                            message:"leave type status has been changed successfully.",
+                            message:"Leave type status has been changed successfully.",
                         });
                     }else{
                         let message = `No leave type with id ${body.id}.`;

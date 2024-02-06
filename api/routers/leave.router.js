@@ -253,7 +253,66 @@ router.get('/leave-type/view', middleware.isLoggedIn, leaveTypeController.viewLe
  */
 router.put('/leave-type/edit', middleware.isLoggedIn, leaveTypeController.editLeaveType)
 
-
+/**
+ * @swagger
+ * /leaves/leave-type/status-change:
+ *   put:
+ *     summary: Update leave type status
+ *     tags: [Leave Type]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the leave type
+ *               value:
+ *                type: number
+ *                example: 1
+ *                description: New value for the status
+ *     responses:
+ *       200:
+ *         description: On successful update of leave type status.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave type status has been changed successfully.
+ *       400:
+ *         description: When required values are not sent or no leave type exist for the provided ID.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Please provide all values. or No leave type with id 1.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.put('/leave-type/status-change', middleware.isLoggedIn, leaveTypeController.statusChangeLeaveType)
 router.get('/leave-type/list', middleware.isLoggedIn, leaveTypeController.listLeaveType)
 
