@@ -615,6 +615,67 @@ router.get('/leaves/view', middleware.isLoggedIn, leaves.viewLeave)
  *
  */
 router.get('/leaves/list', middleware.isLoggedIn, leaves.listLeave)
+
+/**
+ * @swagger
+ * /leaves/leaves/status-change:
+ *   put:
+ *     summary: Update leave status
+ *     tags: [Leaves]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                type: number
+ *                example: 1
+ *                description: ID of the leave
+ *               value:
+ *                type: number
+ *                example: 1
+ *                description: New value for the status
+ *     responses:
+ *       200:
+ *         description: On successful update of leave status.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave status has been changed successfully.
+ *       400:
+ *         description: When required values are not sent or no leave exist for the provided ID.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: string
+ *                example: Please provide all values. or No leave with id 100.
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.put('/leaves/status-change', middleware.isLoggedIn, leaves.statusChangedLeave)
 router.put('/leaves/edit', middleware.isLoggedIn, upload.single('documents'), leaves.editLeave)
 router.put('/leaves/leave-approve', middleware.isLoggedIn, leaves.approveLeave)

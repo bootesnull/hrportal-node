@@ -132,24 +132,29 @@ module.exports = {
 
     },
     statusChangedLeave: async(req,res)=>{
-        try {
-            let checkIdexist = await leaveService.getByLeaveId(req.query.id);
-            if(checkIdexist){
-                let statusChangeResponse = await leaveService.statusUdateLeaves(req.query.id,req.query.value)
-                if(statusChangeResponse){
-                    return res.status(200).json({
-                        statusCode:200,
-                        success:true,
-                        message:"leave status has been changed successfully.",
-                    });
+        if(req.body.id && req.body.value) {
+            try {
+                let checkIdexist = await leaveService.getByLeaveId(req.body.id);
+                if(checkIdexist){
+                    let statusChangeResponse = await leaveService.statusUdateLeaves(req.body.id,req.body.value)
+                    if(statusChangeResponse){
+                        return res.status(200).json({
+                            statusCode:200,
+                            success:true,
+                            message:"Leave status has been changed successfully.",
+                        });
+                    }
+                }else{
+                    let message = `No leave with ID ${req.body.id}`;
+                    return errorResponse(res,400,false,message); 
                 }
-            }else{
-                let message = "Id does not exist!";
+            } catch (error) {
+                let message = "Something went wrong!";
                 return errorResponse(res,500,false,message); 
             }
-        } catch (error) {
-            let message = "Something went wrong!";
-            return errorResponse(res,500,false,message); 
+        } else {
+            let message = "Please provide all values.";
+            return errorResponse(res,400,false,message); 
         }
     },
     approveLeave: async(req,res)=>{
