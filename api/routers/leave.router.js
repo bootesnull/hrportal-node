@@ -314,6 +314,40 @@ router.put('/leave-type/edit', middleware.isLoggedIn, leaveTypeController.editLe
  *
  */
 router.put('/leave-type/status-change', middleware.isLoggedIn, leaveTypeController.statusChangeLeaveType)
+
+/**
+ * @swagger
+ * /leaves/leave-type/list:
+ *   get:
+ *     summary: Get list of all leave types
+ *     tags: [Leave Type]
+ *     responses:
+ *       200:
+ *         description: On successfully getting a list of leave types.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: Leave types fetched successfully.
+ *               data:
+ *                 type: array
+ *                 items:
+ *                  $ref: '#/components/schemas/LeaveType'
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.get('/leave-type/list', middleware.isLoggedIn, leaveTypeController.listLeaveType)
 
 router.post('/leaves/store', middleware.isLoggedIn, upload.single('documents'), leaves.storeLeave)

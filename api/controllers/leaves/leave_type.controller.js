@@ -97,7 +97,7 @@ module.exports = {
                 return res.status(200).json({
                     statusCode:200,
                     success:true,
-                    message:"leave type has been fetched successfully.",
+                    message:"Leave types fetched successfully.",
                     data: viewLeaveTypeResponse
                 });
             }else{
