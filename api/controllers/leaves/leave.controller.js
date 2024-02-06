@@ -216,12 +216,12 @@ module.exports = {
                 return res.status(200).json({
                     statusCode:200,
                     success:true,
-                    message:"user leave has been fetched successfully.",
+                    message:"User leaves has been fetched successfully.",
                     data: userLeaveResponse
                 });
             }else{
                 let message = "Id does not exist!";
-                return errorResponse(res,500,false,message); 
+                return errorResponse(res,400,false,message);
             }
         } catch (error) {
             let message = "Something went wrong!";

@@ -814,6 +814,40 @@ router.put('/leaves/edit', middleware.isLoggedIn, upload.single('documents'), le
  *
  */
 router.put('/leaves/leave-approve', middleware.isLoggedIn, leaves.approveLeave)
+
+/**
+ * @swagger
+ * /leaves/leaves/user-by-leave:
+ *   get:
+ *     summary: Get list of leaves of currently logged in user
+ *     tags: [Leaves]
+ *     responses:
+ *       200:
+ *         description: On successfully getting a list of leaves.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: integer
+ *                example: 200
+ *               success:
+ *                type: boolean
+ *                example: true
+ *               message:
+ *                type: string
+ *                example: User leaves has been fetched successfully.
+ *               data:
+ *                 type: array
+ *                 items:
+ *                  $ref: '#/components/schemas/Leave'
+ *       401:
+ *        $ref: '#/components/responses/Unauthenticated'
+ *       500:
+ *        $ref: '#/components/responses/InternalServerError'
+ *
+ */
 router.get('/leaves/user-by-leave', middleware.isLoggedIn, leaves.userByLeave)
 router.delete('/leaves/delete-leave', middleware.isLoggedIn, leaves.deleteLeave)
 
