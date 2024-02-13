@@ -156,6 +156,22 @@ const config = require("../../config/config");
  *                   type: string
  *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNoYXJhbnZlZXJra2sxQGJvb3Rlc251bGwuY29tIiwidXNlcklkIjo5LCJyb2xlIjozLCJpYXQiOjE3MDY4NTg1NTgsImV4cCI6MTcwNzQ2MzM1OH0.fPPB0isWs761XXKPI4Q3WS3OAQDJx5d-4BEQbkS0twc
  *
+ *       400:
+ *         description: When an required values are not provided or When provided email is not valid.
+ *         content:
+ *           application/json:
+ *            schema:
+ *             type: object
+ *             properties:
+ *               statusCode:
+ *                type: number
+ *                example: 400
+ *               success:
+ *                type: boolean
+ *                example: false
+ *               message:
+ *                type: message
+ *                example: Please provide all values. or Please provide a valid email with bootesnull.com domain.
  *       500:
  *        $ref: '#/components/responses/InternalServerError'
  *
