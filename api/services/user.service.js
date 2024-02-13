@@ -94,11 +94,9 @@ module.exports = {
             }
         );
     },
-    userLogin: (data,callback)=>{
-       
-        const email = data.email;
+    userLogin: (email,callback)=>{
         pool.query(
-            `select * from users join user_tokens on users.id = user_tokens.user_id where email = ?`,
+            `select * from users where email = ?`,
             [email],
             (error, results, fields) => {  
                 // let collection = collect(results);

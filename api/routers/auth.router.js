@@ -92,7 +92,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../../config/database");
-const { createUser } = require("../controllers/users/user.controller");
+const { createUser, userLogin } = require("../controllers/users/user.controller");
 const userMiddleware = require("../middleware/auth");
 const errorResponse = require("../services/errorResponse.service");
 const dateTime = require("node-datetime");
@@ -201,7 +201,7 @@ router.post("/sign-up", createUser);
  *               user:
  *                 $ref: '#/components/schemas/User'
  *       400:
- *         description: When credentials are invalid.
+ *         description: When an email is not provided or When credentials are invalid.
  *         content:
  *           application/json:
  *            schema:
@@ -215,60 +215,12 @@ router.post("/sign-up", createUser);
  *                example: false
  *               message:
  *                type: message
- *                example: Invalid credentials!
+ *                example: Please provide an email. or Invalid credentials!
  *       500:
  *        $ref: '#/components/responses/InternalServerError'
  *
  */
-router.post("/login", (req, res, next) => {
-  db.query(
-    `SELECT * FROM users WHERE email = ?`,
-    [req.body.email],
-    (err, result) => {
-      // user does not exists
-      if (err) {
-        throw err;
-        return errorResponse(res, 400, false, err);
-      }
-      if (!result.length) {
-        const message = "Invalid credentials!";
-        return errorResponse(res, 400, false, message);
-      }
-
-      // check password
-      if (result) {
-        let roleId = 3;
-        if(result[0].role) {
-          roleId = +result[0].role;
-        }
-        const token = jwt.sign(
-          {
-            email: result[0].email,
-            userId: result[0].id,
-            role: roleId,
-          },
-          "SECRETKEY",
-          {
-            expiresIn: "7d",
-          }
-        );
-        db.query(
-          `INSERT INTO user_tokens (user_id, token, created_at,updated_at) VALUES (?,?,?,?)`,
-          [result[0].id, token, created, created]
-        );
-        return res.status(200).send({
-          statusCode: 200,
-          success: true,
-          message: "success",
-          token,
-          user: result[0],
-        });
-      }
-      const message = "Invalid credentials!";
-      return errorResponse(res, 400, false, message);
-    }
-  );
-});
+router.post("/login", userLogin);
 
 router.get("/secret-route", userMiddleware.isLoggedIn, (req, res, next) => {
   return res.status(200).send({
